@@ -4,10 +4,12 @@
     ├── build                   # Compiled files (alternatively `dist`)
     ├── src
     │   ├── css
-        ├── images
-        ├── screens             # contains screens for getBetter app (welcome screen, mood interface, etc)
-        ├── screens             # not in used right now
+    │   ├── images
+    │   ├── screens             # contains screens for getBetter app (welcome screen, mood interface, etc)
+    │   ├── screens             # not in used right now
     │   └── index.js            # main file that loads screens
+    ├── package.json            # dependencies management
+    ├── .gitignore              # keeps untracked files to be ignored by git
     └── README.md               # Documentation files (alternatively `doc`)
 
 ### Scripts
