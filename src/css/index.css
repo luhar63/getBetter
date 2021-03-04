@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap");
+@import url("./variables.css");
+@import url("./normalize.css");
+
+body {
+  font-family: "Roboto", sans-serif;
+  margin: auto;
+  padding: 2rem;
+  font-size: 16px;
+  background: #fff;
+}
+
+.responsive {
+  width: 100%;
+  height: auto;
+}
