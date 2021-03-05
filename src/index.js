@@ -1,12 +1,18 @@
 const { app, BrowserWindow } = require('electron');
+// const { BrowserWindow } = require('electron').remote
 const path = require('path');
+
+const { createWelcomeWindow } = require('./js/windowManger')
+
+
+const { initPowerMonitoring } = require('./js/powermanagement');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
 }
 
-let welcomeWindow = null;
+let window = null;
 
 // const createWindow = () => {
 //   // Create the browser window.
@@ -39,6 +45,7 @@ app.setAppUserModelId('gameOfMinds.getbetter')
 // Some APIs can only be used after this event occurs.
 // app.on('ready', createWindow);
 app.on('ready', loadSettings);
+app.on('ready', initPowerMonitoring);
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -65,83 +72,56 @@ function loadSettings() {
   createWelcomeWindow();
 }
 
-function createWelcomeWindow() {
-  // if (settings.get('isFirstRun')) {
-  const modalPath = path.join('file://', __dirname, '/screens/welcome.html')
-  welcomeWindow = new BrowserWindow({
-    x: displaysX(-1, 1000),
-    y: displaysY(),
-    width: 1024,
-    height: 768,
-    autoHideMenuBar: true,
-    icon: windowIconPath(),
-    backgroundColor: '#EDEDED',
-    webPreferences: {
-      nodeIntegration: true,
-      enableRemoteModule: true
-    }
-  })
-  welcomeWindow.loadURL(modalPath)
-  if (welcomeWindow) {
-    welcomeWindow.on('closed', () => {
-      welcomeWindow = null
-    })
-  }
-  welcomeWindow.webContents.openDevTools();
-}
+// function createWindowPrototype(modalPath) {
+//   window = new BrowserWindow({
+//     x: displaysX(-1, 1000),
+//     y: displaysY(),
+//     width: 1024,
+//     height: 768,
+//     autoHideMenuBar: true,
+//     icon: windowIconPath(),
+//     backgroundColor: '#EDEDED',
+//     webPreferences: {
+//       nodeIntegration: true,
+//       enableRemoteModule: true
+//     }
+//   });
+//   window.loadURL(modalPath)
+//   if (window) {
+//     window.on('closed', () => {
+//       window = null
+//     })
+//   }
+//   window.webContents.openDevTools();
+//   return window;
 // }
 
-function windowIconPath() {
-  // const params = {
-  //   paused: breakPlanner.isPaused,
-  //   monochrome: settings.get('useMonochromeTrayIcon'),
-  //   inverted: settings.get('useMonochromeInvertedTrayIcon'),
-  //   darkMode: nativeTheme.shouldUseDarkColors,
-  //   platform: process.platform
-  // }
-  // const windowIconFileName = new AppIcon(params).windowIconFileName
-  return path.join(__dirname, '/images/logo.png');
-}
+// function createWelcomeWindow() {
+//   // if (settings.get('isFirstRun')) {
+//   const modalPath = path.join('file://', __dirname, '/screens/welcome.html')
+//   if (!window) {
+//     welcomeWindow = createWindowPrototype(modalPath);
+//   }
+// }
+// // }
 
+// function windowIconPath() {
+//   // const params = {
+//   //   paused: breakPlanner.isPaused,
+//   //   monochrome: settings.get('useMonochromeTrayIcon'),
+//   //   inverted: settings.get('useMonochromeInvertedTrayIcon'),
+//   //   darkMode: nativeTheme.shouldUseDarkColors,
+//   //   platform: process.platform
+//   // }
+//   // const windowIconFileName = new AppIcon(params).windowIconFileName
+//   return path.join(__dirname, '/images/logo.png');
+// }
 
-function displaysX(displayID = -1, width = 1024, fullscreen = false) {
-  const electron = require('electron')
-  let theScreen
-  if (displayID === -1) {
-    theScreen = electron.screen.getDisplayNearestPoint(electron.screen.getCursorScreenPoint())
-  } else if (displayID >= numberOfDisplays() || displayID < 0) {
-    // Graceful handling of invalid displayID
-    log.warn('getBetter: invalid displayID to displaysX')
-    theScreen = electron.screen.getDisplayNearestPoint(electron.screen.getCursorScreenPoint())
-  } else {
-    const screens = electron.screen.getAllDisplays()
-    theScreen = screens[displayID]
-  }
-  const bounds = theScreen.bounds
-  if (fullscreen) {
-    return Math.ceil(bounds.x)
-  } else {
-    return Math.ceil(bounds.x + ((bounds.width - width) / 2))
-  }
-}
-
-function displaysY(displayID = -1, height = 768, fullscreen = false) {
-  const electron = require('electron')
-  let theScreen
-  if (displayID === -1) {
-    theScreen = electron.screen.getDisplayNearestPoint(electron.screen.getCursorScreenPoint())
-  } else if (displayID >= numberOfDisplays()) {
-    // Graceful handling of invalid displayID
-    log.warn('getBetter: invalid displayID to displaysY')
-    theScreen = electron.screen.getDisplayNearestPoint(electron.screen.getCursorScreenPoint())
-  } else {
-    const screens = electron.screen.getAllDisplays()
-    theScreen = screens[displayID]
-  }
-  const bounds = theScreen.bounds
-  if (fullscreen) {
-    return Math.ceil(bounds.y)
-  } else {
-    return Math.ceil(bounds.y + ((bounds.height - height) / 2))
-  }
-}
+// function createMoodsWindow() {
+//   const modalPath = path.join('file://', __dirname, '../screens/moods.html')
+//   if (window) {
+//     window.loadURL(modalPath);
+//   } else {
+//     moodsWindow = createWindowPrototype(modalPath);
+//   }
+// }

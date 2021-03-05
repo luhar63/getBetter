@@ -5,10 +5,10 @@
   "description": "My Electron application description",
   "main": "src/index.js",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "set NODE_ENV=development && electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "publish": "electron-forge publish",
+    "publish": "set NODE_ENV=production && electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
   "keywords": [],
@@ -45,6 +45,7 @@
     }
   },
   "dependencies": {
+    "electron-log": "^4.3.2",
     "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
