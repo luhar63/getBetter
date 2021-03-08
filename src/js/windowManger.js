@@ -3,7 +3,7 @@ const path = require('path');
 const { displaysX, displaysY } = require('./utils')
 
 const env = process.env.NODE_ENV || 'development';
-
+console.log("env", env);
 let window = null;
 
 let welcomeWindow;

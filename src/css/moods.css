@@ -1,0 +1,76 @@
+@import url(./index.css);
+.moods-page .welcome-logo {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+}
+
+.moods-page .welcome-logo img {
+  width: 38px;
+  height: 40px;
+  animation: animateHeart 2s infinite;
+  margin-right: 10px;
+}
+
+.moods-page .welcome-logo .title {
+  font-size: 2.4rem;
+  margin-block-start: 10px;
+  margin-right: 38px;
+}
+.moods-page .main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 80vh;
+}
+
+.mood-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  margin-top: 40px;
+  list-style: none;
+  align-items: center;
+  width: clamp(350px, 100vw, 800px);
+  /* max-width: 600px; */
+}
+.title-question {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #eb6093;
+  font-weight: normal;
+  align-items: center;
+}
+.mood {
+  padding: 10px 1.5%;
+}
+.mood:hover {
+  background: #ecf6ff;
+  cursor: pointer;
+}
+
+.mood.selected {
+  background: #dbfdfb;
+}
+.mood.selected:hover {
+  background: #dbfdfb;
+  cursor: pointer;
+}
+.mood:hover img {
+  transform: scale(1.5);
+}
+.mood.selected .text {
+  color: #23654d;
+}
+.mood img {
+  width: 64px;
+  height: 64px;
+  position: relative;
+  transition: all 0.2s ease-in;
+}
+
+.mood .text {
+  text-align: center;
+}
