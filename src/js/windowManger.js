@@ -23,7 +23,11 @@ function createWindowPrototype(modalPath) {
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true
-        }
+        },
+        title: 'getBetter',
+        skipTaskbar: true,
+        focusable: false,
+        frame: true,
     });
     window.loadURL(modalPath)
     if (window) {
