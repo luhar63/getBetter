@@ -1,6 +1,6 @@
 {
   "main": {
-    "toolTipHeader": "Stretchly - The break time reminder app",
+    "toolTipHeader": "getBetter - Its break time!",
     "microbreakIn": "Mini Break in $t(utils.seconds, {'count': {{seconds}} })",
     "breakIn": "Long Break in $t(utils.seconds, {'count': {{seconds}} })",
     "resumingBreaks": "Resuming breaks",

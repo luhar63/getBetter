@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, globalShortcut } = require('electron');
+const { app, BrowserWindow, nativeTheme, Menu, Tray, ipcMain, dialog, globalShortcut } = require('electron');
 const log = require('electron-log');
 const i18next = require('i18next')
 const Backend = require('i18next-node-fs-backend')
@@ -39,11 +39,18 @@ function startI18next() {
       if (err) {
         console.log(err.stack)
       }
-      // if (appIcon) {
-      //   updateTray()
-      // }
+      if (appIcon) {
+        updateTray()
+      }
     })
 }
+
+i18next.on('languageChanged', function (lng) {
+  if (appIcon) {
+    updateTray()
+  }
+});
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
@@ -55,6 +62,7 @@ let breakIdeas;
 let nextIdea = null;
 let processWin = null;
 let welcomeWin = null;
+let appIcon = null;
 
 app.setAppUserModelId('gameOfMinds.getbetter')
 
@@ -62,6 +70,7 @@ const AppSettings = require('./js/settings');
 const Utils = require('./js/utils');
 const BreaksPlanner = require('./js/breaksPlanner')
 const IdeasLoader = require('./js/ideasLoader')
+const AppIcon = require('./js/appIcon')
 // const Command = require('./js/commands')
 
 const gotTheLock = app.requestSingleInstanceLock()
@@ -75,6 +84,10 @@ console.log("got the lock", gotTheLock);
 //   app.quit()
 // }
 
+nativeTheme.on('updated', function theThemeHasChanged() {
+  appIcon.setImage(trayIconPath())
+})
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -82,6 +95,7 @@ console.log("got the lock", gotTheLock);
 app.on('ready', startProcessWin);
 app.on('ready', loadSettings);
 app.on('ready', initPowerMonitoring);
+app.on('ready', createTrayIcon);
 
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -125,17 +139,7 @@ function loadSettings() {
   createWelcomeWindow();
 }
 
-function windowIconPath() {
-  // const params = {
-  //   paused: breakPlanner.isPaused,
-  //   monochrome: settings.get('useMonochromeTrayIcon'),
-  //   inverted: settings.get('useMonochromeInvertedTrayIcon'),
-  //   darkMode: nativeTheme.shouldUseDarkColors,
-  //   platform: process.platform
-  // }
-  // const windowIconFileName = new AppIcon(params).windowIconFileName
-  return path.join(__dirname, '/images/icon.png');
-}
+
 
 // function createMoodsWindow() {
 //   const modalPath = path.join('file://', __dirname, '../screens/moods.html')
@@ -221,7 +225,6 @@ function startBreakNotification() {
 }
 
 function startBreak() {
-  debugger;
   if (!breakIdeas) {
     loadIdeas()
   }
@@ -384,3 +387,231 @@ function postponeBreak(shouldPlaySound = false) {
   log.info('getBetter: postponing Long Break')
   // updateTray()
 }
+
+function skipToBreak() {
+  if (microbreakWins) {
+    microbreakWins = breakComplete(false, microbreakWins)
+  }
+  if (breakWins) {
+    breakWins = breakComplete(false, breakWins)
+  }
+  breakPlanner.skipToBreak()
+  log.info('Stretchly: skipping to Long Break')
+  updateTray()
+}
+
+function resetBreaks() {
+  if (microbreakWins) {
+    microbreakWins = breakComplete(false, microbreakWins)
+  }
+  if (breakWins) {
+    breakWins = breakComplete(false, breakWins)
+  }
+  breakPlanner.reset()
+  log.info('Stretchly: reseting breaks')
+  updateTray()
+}
+
+function createTrayIcon() {
+  if (process.platform === 'darwin') {
+    app.dock.hide()
+  }
+  appIcon = new Tray(trayIconPath())
+  updateTray();
+  setInterval(updateTray, 10000)
+}
+
+function trayIconPath() {
+  const params = {
+    paused: breakPlanner.isPaused || breakPlanner.dndManager.isOnDnd || breakPlanner.naturalBreaksManager.isSchedulerCleared,
+    monochrome: settings.get('useMonochromeTrayIcon'),
+    inverted: settings.get('useMonochromeInvertedTrayIcon'),
+    darkMode: nativeTheme.shouldUseDarkColors,
+    platform: process.platform
+  }
+  const trayIconFileName = new AppIcon(params).trayIconFileName
+  return path.join(__dirname, './images/app-icons/', trayIconFileName)
+}
+
+function windowIconPath() {
+  const params = {
+    paused: breakPlanner.isPaused,
+    monochrome: settings.get('useMonochromeTrayIcon'),
+    inverted: settings.get('useMonochromeInvertedTrayIcon'),
+    darkMode: nativeTheme.shouldUseDarkColors,
+    platform: process.platform
+  }
+  const windowIconFileName = new AppIcon(params).windowIconFileName
+  return path.join(__dirname, './images/app-icons/', windowIconFileName);
+}
+
+function updateTray() {
+  updateToolTip()
+  appIcon.setImage(trayIconPath())
+  appIcon.setContextMenu(getTrayMenu())
+}
+
+function updateToolTip() {
+  const StatusMessages = require('./js/statusMessages')
+  let trayMessage = i18next.t('main.toolTipHeader')
+  const message = new StatusMessages({
+    breakPlanner: breakPlanner,
+    settings: settings
+  }).trayMessage
+  if (message !== '') {
+    trayMessage += '\n\n' + message
+  }
+  appIcon.setToolTip(trayMessage)
+}
+
+function getTrayMenu() {
+  const trayMenu = []
+  const doNotDisturb = breakPlanner.dndManager.isOnDnd
+
+  // if (global.shared.isNewVersion) {
+  //   trayMenu.push({
+  //     label: i18next.t('main.downloadLatestVersion'),
+  //     click: function () {
+  //       shell.openExternal('https://hovancik.net/stretchly/downloads')
+  //     }
+  //   }, {
+  //     type: 'separator'
+  //   })
+  // }
+
+  const StatusMessages = require('./js/statusMessages')
+  const statusMessage = new StatusMessages({
+    breakPlanner: breakPlanner,
+    settings: settings
+  }).trayMessage
+
+  if (statusMessage !== '') {
+    const messages = statusMessage.split('\n')
+    for (const index in messages) {
+      trayMenu.push({
+        label: messages[index],
+        enabled: false
+      })
+    }
+
+    trayMenu.push({
+      type: 'separator'
+    })
+  }
+
+  if (!(breakPlanner.isPaused || breakPlanner.dndManager.isOnDnd)) {
+    let submenu = []
+    if (settings.get('microbreak')) {
+      submenu = submenu.concat([{
+        label: i18next.t('main.toMicrobreak'),
+        click: skipToMicrobreak
+      }])
+    }
+    if (settings.get('break')) {
+      submenu = submenu.concat([{
+        label: i18next.t('main.toBreak'),
+        click: skipToBreak
+      }])
+    }
+    if (settings.get('break') || settings.get('microbreak')) {
+      trayMenu.push({
+        label: i18next.t('main.skipToTheNext'),
+        submenu: submenu
+      })
+    }
+  }
+
+  if (breakPlanner.isPaused) {
+    trayMenu.push({
+      label: i18next.t('main.resume'),
+      click: function () {
+        resumeBreaks(false)
+        updateTray()
+      }
+    })
+  } else if (!doNotDisturb) {
+    trayMenu.push({
+      label: i18next.t('main.pause'),
+      submenu: [
+        {
+          label: i18next.t('main.forHour'),
+          click: function () {
+            pauseBreaks(3600 * 1000)
+          }
+        }, {
+          label: i18next.t('main.for2Hours'),
+          click: function () {
+            pauseBreaks(3600 * 2 * 1000)
+          }
+        }, {
+          label: i18next.t('main.for5Hours'),
+          click: function () {
+            pauseBreaks(3600 * 5 * 1000)
+          }
+        }, {
+          label: i18next.t('main.untilMorning'),
+          click: function () {
+            const untilMorning = new UntilMorning(settings).msToSunrise()
+            pauseBreaks(untilMorning)
+          }
+        }, {
+          type: 'separator'
+        }, {
+          label: i18next.t('main.indefinitely'),
+          click: function () {
+            pauseBreaks(1)
+          }
+        }
+      ]
+    })
+  }
+
+  if (breakPlanner.scheduler.reference === 'finishMicrobreak' && settings.get('microbreakStrictMode')) {
+    // nothing
+  } else if (breakPlanner.scheduler.reference === 'finishBreak' && settings.get('breakStrictMode')) {
+    // nothing
+  } else {
+    trayMenu.push({
+      label: i18next.t('main.resetBreaks'),
+      click: resetBreaks
+    })
+  }
+
+  trayMenu.push({
+    type: 'separator'
+  }, {
+    label: i18next.t('main.preferences'),
+    click: function () {
+      createPreferencesWindow()
+    }
+  })
+
+  // if (global.shared.isContributor) {
+  //   trayMenu.push({
+  //     label: i18next.t('main.contributorPreferences'),
+  //     click: function () {
+  //       createContributorSettingsWindow()
+  //     }
+  //   }, {
+  //     label: i18next.t('main.syncPreferences'),
+  //     click: function () {
+  //       createSyncPreferencesWindow()
+  //     }
+  //   })
+  // }
+
+  trayMenu.push({
+    type: 'separator'
+  }, {
+    label: i18next.t('main.quitStretchly'),
+    role: 'quit',
+    click: function () {
+      app.quit()
+    }
+  })
+
+  return Menu.buildFromTemplate(trayMenu)
+}
+ipcMain.on('update-tray', function (event) {
+  updateTray()
+})
