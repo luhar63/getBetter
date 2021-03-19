@@ -64,6 +64,7 @@ let processWin = null;
 let welcomeWin = null;
 let appIcon = null;
 let notificationWins = null;
+let preferencesWin = null
 
 app.setAppUserModelId('gameOfMinds.getbetter')
 
@@ -767,3 +768,33 @@ function getTrayMenu() {
 ipcMain.on('update-tray', function (event) {
   updateTray()
 })
+
+function createPreferencesWindow () { 
+  const electron = require('electron')
+  if (preferencesWin) {
+    preferencesWin.show()
+    return
+  }
+  const modalPath = path.join('file://', __dirname, '/screens/preferences.html')
+  const maxHeight = electron.screen
+    .getDisplayNearestPoint(electron.screen.getCursorScreenPoint())
+    .workAreaSize.height * 0.9
+  preferencesWin = new BrowserWindow({
+    autoHideMenuBar: true,
+    icon: windowIconPath(),
+    width: 600,
+    height: 530,
+    maxHeight: Math.round(maxHeight),
+    x: Utils.displaysX(-1, 600),
+    y: Utils.displaysY(-1, 530),
+    backgroundColor: '#EDEDED',
+    webPreferences: {
+      preload: path.join(__dirname, './screens/preferences.js'),
+      enableRemoteModule: true
+    }
+  })
+  preferencesWin.loadURL(modalPath)
+  preferencesWin.on('closed', () => {
+    preferencesWin = null
+  })
+}
