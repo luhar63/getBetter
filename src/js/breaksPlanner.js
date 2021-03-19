@@ -72,35 +72,45 @@ class BreaksPlanner extends EventEmitter {
         const breakNotificationInterval = this.settings.get('breakNotificationInterval')
         const microbreakNotification = this.settings.get('microbreakNotification')
         const microbreakNotificationInterval = this.settings.get('microbreakNotificationInterval')
-        if (!shouldBreak && shouldMicrobreak) {
-            if (microbreakNotification) {
-                this.scheduler = new Scheduler(() => this.emit('startMicrobreakNotification'), interval - microbreakNotificationInterval, 'startMicrobreakNotification')
-            } else {
-                this.scheduler = new Scheduler(() => this.emit('startMicrobreak'), interval, 'startMicrobreak')
-            }
-        } else if (shouldBreak && !shouldMicrobreak) {
+        if (shouldBreak) {
             if (breakNotification) {
+                console.log("call", "startBreakNotification");
                 this.scheduler = new Scheduler(() => this.emit('startBreakNotification'), interval * (this.settings.get('breakInterval') + 1) - breakNotificationInterval, 'startBreakNotification')
             } else {
+                console.log("call", "startBreak");
                 this.scheduler = new Scheduler(() => this.emit('startBreak'), interval * (this.settings.get('breakInterval') + 1), 'startBreak')
             }
-        } else if (shouldBreak && shouldMicrobreak) {
-            this.breakNumber = this.breakNumber + 1
-            const breakInterval = this.settings.get('breakInterval') + 1
-            if (this.breakNumber % breakInterval === 0) {
-                if (breakNotification) {
-                    this.scheduler = new Scheduler(() => this.emit('startBreakNotification'), interval - breakNotificationInterval, 'startBreakNotification')
-                } else {
-                    this.scheduler = new Scheduler(() => this.emit('startBreak'), interval, 'startBreak')
-                }
-            } else {
-                if (microbreakNotification) {
-                    this.scheduler = new Scheduler(() => this.emit('startMicrobreakNotification'), interval - microbreakNotificationInterval, 'startMicrobreakNotification')
-                } else {
-                    this.scheduler = new Scheduler(() => this.emit('startMicrobreak'), interval, 'startMicrobreak')
-                }
-            }
         }
+
+        // if (!shouldBreak && shouldMicrobreak) {
+        //     if (microbreakNotification) {
+        //         this.scheduler = new Scheduler(() => this.emit('startMicrobreakNotification'), interval - microbreakNotificationInterval, 'startMicrobreakNotification')
+        //     } else {
+        //         this.scheduler = new Scheduler(() => this.emit('startMicrobreak'), interval, 'startMicrobreak')
+        //     }
+        // } else if (shouldBreak && !shouldMicrobreak) {
+        //     if (breakNotification) {
+        //         this.scheduler = new Scheduler(() => this.emit('startBreakNotification'), interval * (this.settings.get('breakInterval') + 1) - breakNotificationInterval, 'startBreakNotification')
+        //     } else {
+        //         this.scheduler = new Scheduler(() => this.emit('startBreak'), interval * (this.settings.get('breakInterval') + 1), 'startBreak')
+        //     }
+        // } else if (shouldBreak && shouldMicrobreak) {
+        //     this.breakNumber = this.breakNumber + 1
+        //     const breakInterval = this.settings.get('breakInterval') + 1
+        //     if (this.breakNumber % breakInterval === 0) {
+        //         if (breakNotification) {
+        //             this.scheduler = new Scheduler(() => this.emit('startBreakNotification'), interval - breakNotificationInterval, 'startBreakNotification')
+        //         } else {
+        //             this.scheduler = new Scheduler(() => this.emit('startBreak'), interval, 'startBreak')
+        //         }
+        //     } else {
+        //         if (microbreakNotification) {
+        //             this.scheduler = new Scheduler(() => this.emit('startMicrobreakNotification'), interval - microbreakNotificationInterval, 'startMicrobreakNotification')
+        //         } else {
+        //             this.scheduler = new Scheduler(() => this.emit('startMicrobreak'), interval, 'startMicrobreak')
+        //         }
+        //     }
+        // }
         console.log(this.scheduler);
         this.scheduler.plan()
     }

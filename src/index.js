@@ -182,7 +182,9 @@ ipcMain.on('play-sound', function (event, sound) {
   processWin.webContents.send('playSound', sound, settings.get('volume'))
 })
 
-
+ipcMain.on('open-preferences', function (event) {
+  createPreferencesWindow();
+})
 
 ipcMain.on('postpone-break', function (event, shouldPlaySound) {
   postponeBreak()
@@ -206,8 +208,9 @@ function closeWindows(windowArray) {
   if (!windowArray)
     return null
   for (let i = windowArray.length - 1; i >= 0; i--) {
-    windowArray[i].hide()
-    windowArray[i].close()
+    windowArray[i].blur();
+    windowArray[i].hide();
+    windowArray[i].close();
   }
   return null
 }
@@ -267,17 +270,17 @@ function showNotificationWindow() {
 
   for (let localDisplayId = 0; localDisplayId < numberOfDisplays(); localDisplayId++) {
     const windowOptions = {
-      width: Number.parseInt(Utils.displaysWidth(localDisplayId) * 0.30),
-      height: Number.parseInt(Utils.displaysHeight(localDisplayId) * 0.30),
+      width: Number.parseInt(Utils.displaysWidth(localDisplayId) * 0.35),
+      height: Number.parseInt(Utils.displaysHeight(localDisplayId) * 0.31),
       autoHideMenuBar: true,
       icon: windowIconPath(),
       resizable: false,
       frame: false,
-      show: true,
+      show: false,
       transparent: settings.get('transparentMode'),
       backgroundColor: nativeTheme.shouldUseDarkColors ? "#2d2d2d" : "#ededed",
       skipTaskbar: true,
-      focusable: false,
+      focusable: true,
       title: 'getBetter',
       alwaysOnTop: true,
       webPreferences: {
@@ -286,7 +289,7 @@ function showNotificationWindow() {
       }
     };
 
-
+    // asdaksdaksjhd khasdkhas dkhkhl asdkj
     // if (settings.get('fullscreen') && process.platform !== 'darwin') {
     //   windowOptions.width = Utils.displaysWidth(localDisplayId)
     //   windowOptions.height = Utils.displaysHeight(localDisplayId)
@@ -298,14 +301,19 @@ function showNotificationWindow() {
     // theScreen = electron.screen.getDisplayNearestPoint(electron.screen.getCursorScreenPoint())
     // console.log(electron.screen.getPrimaryDisplay(), )
     let bounds = electron.screen.getPrimaryDisplay().bounds
-    windowOptions.x = bounds.width + 400;
-    windowOptions.y = (bounds.height - 100);
+
+    windowOptions.x = bounds.width;
+    windowOptions.y = bounds.height;
 
     let notificationWinLocal = new BrowserWindow(windowOptions);
-    animateIn(notificationWinLocal, (bounds.width - windowOptions.width + 20), (bounds.height - 100), windowOptions.width, windowOptions.height);
-    notificationWinLocal.setSize(windowOptions.width, windowOptions.height)
-
+    console.log(bounds.width, bounds.height, windowOptions.x, windowOptions.y, notificationWinLocal.getPosition());
+    notificationWinLocal.hide();
+    notificationWinLocal.setOpacity(0);
     notificationWinLocal.once('ready-to-show', () => {
+
+      // notificationWinLocal.setPosition(windowOptions.x, windowOptions.y);
+      animateIn(notificationWinLocal, (bounds.width - windowOptions.width + 20), (bounds.height - 100), windowOptions.width, windowOptions.height);
+      // notificationWinLocal.setSize(windowOptions.width, windowOptions.height)
       notificationWinLocal.showInactive()
       log.info(`getBetter: showing window ${localDisplayId + 1} of ${numberOfDisplays()}`)
       if (process.platform === 'darwin') {
@@ -318,10 +326,11 @@ function showNotificationWindow() {
       //     notificationWinLocal.center()
       //   }, 0)
       // }
+
     })
     // notificationWinLocal.webContents.openDevTools()
-    notificationWinLocal.loadURL(modalPath)
-    notificationWinLocal.setVisibleOnAllWorkspaces(true)
+    notificationWinLocal.loadURL(modalPath);
+    notificationWinLocal.setVisibleOnAllWorkspaces(true);
     notificationWinLocal.setAlwaysOnTop(true, 'screen-saver')
     if (notificationWinLocal) {
       notificationWinLocal.on('closed', () => {
@@ -342,15 +351,23 @@ function showNotificationWindow() {
 }
 
 function animateIn(window, maxX, maxY, maxW, maxH) {
+
   let x = maxX + maxW - 20;
   let y = maxY - maxH;
+  let flag = true;
   let interval = setInterval(() => {
-    if (x == (maxX - 20)) {
+    if (x <= (maxX - 20)) {
       clearInterval(interval);
     }
-    x--;
+    x -= 5;
     window.setPosition(x, y);
-  }, 0.01);
+    if (flag) {
+      window.show();
+      window.setOpacity(1);
+      flag = false;
+    }
+
+  }, 0.001);
 }
 
 function animateOut(window, maxX, maxY, maxW, maxH) {
@@ -476,7 +493,7 @@ function startBreak() {
     }
   }
   if (process.platform === 'darwin') {
-    app.dock.hide()
+    app.dock.hide();
   }
   updateTray()
 }
@@ -490,14 +507,14 @@ function skipbreak() {
   if (process.platform === 'darwin') {
     app.dock.hide()
   }
-  breakPlanner.nextBreakAfterNotification();
+  breakPlanner.nextBreak();
   updateTray();
 }
 
 function finishBreak(shouldPlaySound = true) {
   breakWins = breakComplete(shouldPlaySound, breakWins)
   log.info('getBetter: finishing Long Break')
-  breakPlanner.nextBreakAfterNotification();
+  breakPlanner.nextBreak();
   updateTray();
 }
 
@@ -769,7 +786,7 @@ ipcMain.on('update-tray', function (event) {
   updateTray()
 })
 
-function createPreferencesWindow () { 
+function createPreferencesWindow() {
   const electron = require('electron')
   if (preferencesWin) {
     preferencesWin.show()
@@ -798,3 +815,39 @@ function createPreferencesWindow () {
     preferencesWin = null
   })
 }
+
+ipcMain.on('send-settings', function (event) {
+  event.sender.send('renderSettings', settingsToSend())
+});
+
+function settingsToSend() {
+  const loginItemSettings = app.getLoginItemSettings()
+  const openAtLogin = loginItemSettings.openAtLogin
+  return Object.assign({}, settings.data, { openAtLogin: openAtLogin })
+}
+
+ipcMain.on('save-setting', function (event, key, value) {
+  if (key === 'naturalBreaks') {
+    breakPlanner.naturalBreaks(value)
+  }
+
+  if (key === 'monitorDnd') {
+    breakPlanner.doNotDisturb(value)
+  }
+
+  if (key === 'language') {
+    i18next.changeLanguage(value)
+  }
+
+  if (key === 'themeSource') {
+    nativeTheme.themeSource = value
+  }
+
+  if (key === 'openAtLogin') {
+    app.setLoginItemSettings({ openAtLogin: value })
+  } else {
+    settings.set(key, value)
+  }
+
+  updateTray()
+})

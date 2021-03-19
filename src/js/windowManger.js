@@ -26,7 +26,7 @@ function createWindowPrototype(modalPath) {
         },
         title: 'getBetter',
         skipTaskbar: true,
-        focusable: false,
+        focusable: true,
         frame: true,
     });
     window.loadURL(modalPath)
