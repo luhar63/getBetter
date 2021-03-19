@@ -30,14 +30,14 @@ class BreaksPlanner extends EventEmitter {
         this.naturalBreaksManager.on('clearBreakScheduler', () => {
             if (!this.isPaused && this.scheduler.reference !== 'finishMicrobreak' && this.scheduler.reference !== 'finishBreak' && this.scheduler.reference !== null) {
                 this.clear()
-                log.info('Stretchly: pausing breaks because of idle time')
+                log.info('getBetter: pausing breaks because of idle time')
             }
         })
 
         this.naturalBreaksManager.on('naturalBreakFinished', () => {
             if (!this.isPaused && this.scheduler.reference !== 'finishMicrobreak' && this.scheduler.reference !== 'finishBreak' && !this.dndManager.isOnDnd) {
                 this.reset()
-                log.info('Stretchly: resuming breaks after idle time')
+                log.info('getBetter: resuming breaks after idle time')
                 this.emit('updateToolTip')
             }
         })
@@ -45,7 +45,7 @@ class BreaksPlanner extends EventEmitter {
         this.dndManager.on('dndStarted', () => {
             if (!this.isPaused && this.scheduler.reference !== 'finishMicrobreak' && this.scheduler.reference !== 'finishBreak' && this.scheduler.reference !== null) {
                 this.clear()
-                log.info('Stretchly: pausing breaks for DND')
+                log.info('getBetter: pausing breaks for DND')
                 this.emit('updateToolTip')
             } else {
                 this.dndManager.isOnDnd = false
@@ -55,7 +55,7 @@ class BreaksPlanner extends EventEmitter {
         this.dndManager.on('dndFinished', () => {
             if (!this.isPaused && this.scheduler.reference !== 'finishMicrobreak' && this.scheduler.reference !== 'finishBreak') {
                 this.reset()
-                log.info('Stretchly: resuming breaks for DND')
+                log.info('getBetter: resuming breaks for DND')
                 this.emit('updateToolTip')
             }
         })
@@ -106,10 +106,12 @@ class BreaksPlanner extends EventEmitter {
     }
 
     nextBreakAfterNotification() {
+        console.log("nextBreakAfterNotification");
         this.scheduler.cancel()
         const scheduledBreakType = this._scheduledBreakType
         const breakNotificationInterval = this.settings.get(`${scheduledBreakType}NotificationInterval`)
         const eventName = `start${scheduledBreakType.charAt(0).toUpperCase() + scheduledBreakType.slice(1)}`
+        console.log("Scheduler");
         this.scheduler = new Scheduler(() => this.emit(eventName), breakNotificationInterval, eventName)
         this.scheduler.plan()
     }
@@ -127,6 +129,7 @@ class BreaksPlanner extends EventEmitter {
             postponeTime = this.settings.get(`${scheduledBreakType}PostponeTime`)
             eventName = `start${scheduledBreakType.charAt(0).toUpperCase() + scheduledBreakType.slice(1)}`
         }
+        console.log("postponeCurrentBreak", notification, postponeTime, eventName);
         this.scheduler = new Scheduler(() => this.emit(eventName), postponeTime, eventName)
         this.scheduler.plan()
     }
@@ -209,6 +212,14 @@ class BreaksPlanner extends EventEmitter {
             this.naturalBreaksManager.stop()
         }
     }
+
+    // setDND(time) {
+    //     time = 1
+    //     this.doNotDisturb(true);
+    //     log.info(`getBetter: starting DND for ${time} mins`)
+    //     this.scheduler = new Scheduler(() => this.doNotDisturb(false), time * 60 * 1000, 'stopDND');
+    //     this.scheduler.plan();
+    // }
 
     doNotDisturb(shouldUse) {
         if (shouldUse) {

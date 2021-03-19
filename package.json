@@ -13,7 +13,7 @@
     "electromon": "electromon .",
     "postinstall": "electron-builder install-app-deps",
     "pack": "electron-builder build --dir",
-    "dist": "electron-builder build --x64 --ia32",
+    "dist": "electron-builder build",
     "test": "mocha test --exclude test/main.js",
     "test-e2e": "mocha test/main.js",
     "test-single": "mocha $1",
@@ -29,7 +29,7 @@
   },
   "build": {
     "appId": "gameofMinds.getBetter",
-    "productName": "Stretchly",
+    "productName": "getBetter",
     "dmg": {
       "icon": "build/icon.icns",
       "iconSize": 128,
@@ -132,6 +132,7 @@
     }
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.3",
     "@meetfranz/electron-notification-state": "^1.0.0",
     "electron-log": "^4.3.2",
     "electron-squirrel-startup": "^1.0.0",

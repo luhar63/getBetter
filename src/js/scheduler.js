@@ -5,6 +5,7 @@ class Scheduler {
         this.delay = delay
         this.func = func
         this.reference = reference
+        console.log(func, delay, reference);
     }
 
     get timeLeft() {

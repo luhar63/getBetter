@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How's your mood?</title>
+    <link rel="stylesheet" type="text/css" href="../css/notification.css" />
+
+    <script defer src="./notification.js"></script>
+  </head>
+  <body class="notification-page">
+    <header>
+      <div class="welcome-logo">
+        <img src="../images/icon.png" class="responsive" />
+        <div class="title">get<span>Better</span></div>
+      </div>
+    </header>
+    <section class="main-content">
+      <div class="notification-text">
+        You have been on the screen for a long time now. You should take a
+        break.
+      </div>
+      <button class="gobreak">
+        <i class="far fa-thumbs-up"></i>Let's do this!
+      </button>
+
+      <div class="action-buttons">
+        <button type="button" class="skip">
+          <i class="fas fa-forward"></i> Skip for now
+        </button>
+        <button type="button" class="dnd">
+          <i class="far fa-clock"></i>Do not disturb
+        </button>
+      </div>
+
+      <div class="time-slider hide">
+        <a class="close" title="close"><i class="fas fa-times"></i></a>
+        <div class="title">Do not Disturb!</div>
+        <div class="subtext">For how long you don't want us to disturb?</div>
+        <div class="range-slider">
+          <span id="rs-bullet" class="rs-label">00:30</span>
+          <input
+            id="rs-range-line"
+            class="rs-range"
+            type="range"
+            value="30"
+            min="30"
+            step="30"
+            max="720"
+          />
+        </div>
+
+        <div class="box-minmax">
+          <span>30 min</span><span>6 hrs</span><span>12 hrs</span>
+        </div>
+        <button class="dnd-select"><i class="fas fa-check"></i>Select</button>
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,13 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap");
 @import url("./variables.css");
 @import url("./normalize.css");
+@import url("../../node_modules//@fortawesome/fontawesome-free/css/all.min.css");
 
 body {
   font-family: "Roboto", sans-serif;
   margin: auto;
-  padding: 2rem;
+  padding: 1.5rem;
   font-size: 16px;
-  background: #fff;
+  background: var(--main-bg-color);
+  color: var(--main-color);
 }
 
 .responsive {

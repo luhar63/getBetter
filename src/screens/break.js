@@ -1,9 +1,9 @@
 const { ipcRenderer, remote } = require('electron')
 const Utils = remote.require('./js/utils')
-// const HtmlTranslate = require('./js/htmlTranslate')
+const HtmlTranslate = require('../js/htmlTranslate')
 
 // window.onload = (event) =>
-//     new HtmlTranslate(document).translate()
+new HtmlTranslate(document).translate()
 
 document.ondragover = event =>
     event.preventDefault()

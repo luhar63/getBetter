@@ -63,6 +63,7 @@ let nextIdea = null;
 let processWin = null;
 let welcomeWin = null;
 let appIcon = null;
+let notificationWins = null;
 
 app.setAppUserModelId('gameOfMinds.getbetter')
 
@@ -127,16 +128,17 @@ function loadSettings() {
   breakPlanner = new BreaksPlanner(settings)
   breakPlanner.nextBreak() // plan first break
   // breakPlanner.on('startMicrobreakNotification', () => { startMicrobreakNotification() })
-  breakPlanner.on('startBreakNotification', () => { debugger; startBreakNotification() })
+  breakPlanner.on('startBreakNotification', () => { startBreakNotification() })
   // breakPlanner.on('startMicrobreak', () => { startMicrobreak() })
   // breakPlanner.on('finishMicrobreak', (shouldPlaySound) => { finishMicrobreak(shouldPlaySound) })
-  breakPlanner.on('startBreak', () => { debugger; startBreak() })
+  // breakPlanner.on('startBreak', () => { startBreak() })
   breakPlanner.on('finishBreak', (shouldPlaySound) => { finishBreak(shouldPlaySound) })
   breakPlanner.on('resumeBreaks', () => { resumeBreaks() })
   breakPlanner.on('updateToolTip', function () {
-    // updateTray()
+    updateTray()
   })
-  createWelcomeWindow();
+  createWelcomeWindow(settings);
+  // showNotificationWindow();
 }
 
 
@@ -154,15 +156,14 @@ function loadSettings() {
 function startProcessWin() {
   const modalPath = path.join('file://', __dirname, '/screens/process.html')
   processWin = new BrowserWindow({
-    width: "300px",
-    height: "200px",
-    show: true,
+    show: false,
+    focus: false,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true
     }
   })
-  processWin.webContents.openDevTools();
+  // processWin.webContents.openDevTools();
   processWin.loadURL(modalPath)
   // processWin.once('ready-to-show', () => {
   //   planVersionCheck()
@@ -175,6 +176,7 @@ function showNotification(text) {
     silent: settings.get('silentNotifications')
   })
 }
+
 ipcMain.on('play-sound', function (event, sound) {
   processWin.webContents.send('playSound', sound, settings.get('volume'))
 })
@@ -185,7 +187,23 @@ ipcMain.on('postpone-break', function (event, shouldPlaySound) {
   postponeBreak()
 })
 
+ipcMain.on('skip-break', function (event) {
+  skipbreak();
+});
+
+ipcMain.on('start-break', function (event) {
+  notificationWins = closeWindows(notificationWins);
+  startBreak();
+});
+
+ipcMain.on('dnd-time-break', function (event, time) {
+  breakPlanner.pause(time * 60 * 1000);
+  notificationWins = closeWindows(notificationWins)
+});
+
 function closeWindows(windowArray) {
+  if (!windowArray)
+    return null
   for (let i = windowArray.length - 1; i >= 0; i--) {
     windowArray[i].hide()
     windowArray[i].close()
@@ -195,7 +213,7 @@ function closeWindows(windowArray) {
 
 
 ipcMain.on('finish-break', function (event, shouldPlaySound) {
-  finishBreak(shouldPlaySound)
+  finishBreak(shouldPlaySound);
 })
 
 function numberOfDisplays() {
@@ -218,10 +236,132 @@ function loadIdeas() {
 }
 
 function startBreakNotification() {
-  showNotification(i18next.t('main.breakIn', { seconds: settings.get('breakNotificationInterval') / 1000 }));
+  const notificationText = i18next.t('main.breakIn', { seconds: settings.get('breakNotificationInterval') / 1000 });
+  // showNotification();
+  showNotificationWindow();
   log.info('getBetter: showing Long Break notification')
   breakPlanner.nextBreakAfterNotification()
-  // updateTray()
+  updateTray()
+}
+
+
+function showNotificationWindow() {
+  const electron = require('electron')
+  const startTime = Date.now();
+  const modalPath = path.join('file://', __dirname, '/screens/notification.html')
+  notificationWins = []
+
+  // const defaultNextIdea = settings.get('ideas') ? breakIdeas.randomElement : ['', '']
+  // const idea = nextIdea ? (nextIdea.map((val, index) => val || defaultNextIdea[index])) : defaultNextIdea
+  // nextIdea = null
+  const breakDuration = settings.get('breakDuration');
+  const strictMode = settings.get('breakStrictMode');
+  const postponesLimit = settings.get('breakPostponesLimit');
+  const postponableDurationPercent = settings.get('breakPostponableDurationPercent');
+  const postponable = settings.get('breakPostpone') &&
+    breakPlanner.postponesNumber < postponesLimit && postponesLimit > 0;
+  if (settings.get('breakStartSoundPlaying') && !settings.get('silentNotifications')) {
+    processWin.webContents.send('playSound', settings.get('audio'), settings.get('volume'))
+  }
+
+  for (let localDisplayId = 0; localDisplayId < numberOfDisplays(); localDisplayId++) {
+    const windowOptions = {
+      width: Number.parseInt(Utils.displaysWidth(localDisplayId) * 0.30),
+      height: Number.parseInt(Utils.displaysHeight(localDisplayId) * 0.30),
+      autoHideMenuBar: true,
+      icon: windowIconPath(),
+      resizable: false,
+      frame: false,
+      show: true,
+      transparent: settings.get('transparentMode'),
+      backgroundColor: nativeTheme.shouldUseDarkColors ? "#2d2d2d" : "#ededed",
+      skipTaskbar: true,
+      focusable: false,
+      title: 'getBetter',
+      alwaysOnTop: true,
+      webPreferences: {
+        nodeIntegration: true,
+        enableRemoteModule: true
+      }
+    };
+
+
+    // if (settings.get('fullscreen') && process.platform !== 'darwin') {
+    //   windowOptions.width = Utils.displaysWidth(localDisplayId)
+    //   windowOptions.height = Utils.displaysHeight(localDisplayId)
+    //   windowOptions.x = Utils.displaysX(localDisplayId, 0, true)
+    //   windowOptions.y = Utils.displaysY(localDisplayId, 0, true)
+    // } else if (!(settings.get('fullscreen') && process.platform === 'win32')) {
+
+    // }
+    // theScreen = electron.screen.getDisplayNearestPoint(electron.screen.getCursorScreenPoint())
+    // console.log(electron.screen.getPrimaryDisplay(), )
+    let bounds = electron.screen.getPrimaryDisplay().bounds
+    windowOptions.x = bounds.width + 400;
+    windowOptions.y = (bounds.height - 100);
+
+    let notificationWinLocal = new BrowserWindow(windowOptions);
+    animateIn(notificationWinLocal, (bounds.width - windowOptions.width + 20), (bounds.height - 100), windowOptions.width, windowOptions.height);
+    notificationWinLocal.setSize(windowOptions.width, windowOptions.height)
+
+    notificationWinLocal.once('ready-to-show', () => {
+      notificationWinLocal.showInactive()
+      log.info(`getBetter: showing window ${localDisplayId + 1} of ${numberOfDisplays()}`)
+      if (process.platform === 'darwin') {
+        notificationWinLocal.setKiosk(settings.get('fullscreen'))
+      }
+      // notificationWinLocal.webContents.send('breakIdea', idea)
+      notificationWinLocal.webContents.send('notify', startTime, breakDuration, strictMode, postponable, postponableDurationPercent, settings)
+      // if (!settings.get('fullscreen') && process.platform !== 'darwin') {
+      //   setTimeout(() => {
+      //     notificationWinLocal.center()
+      //   }, 0)
+      // }
+    })
+    // notificationWinLocal.webContents.openDevTools()
+    notificationWinLocal.loadURL(modalPath)
+    notificationWinLocal.setVisibleOnAllWorkspaces(true)
+    notificationWinLocal.setAlwaysOnTop(true, 'screen-saver')
+    if (notificationWinLocal) {
+      notificationWinLocal.on('closed', () => {
+        notificationWinLocal = null
+      })
+    }
+    notificationWins.push(notificationWinLocal)
+
+    if (!settings.get('allScreens')) {
+      break
+    }
+  }
+  if (process.platform === 'darwin') {
+    app.dock.hide()
+  }
+
+  //todo: closing of windows "notificationWins"
+}
+
+function animateIn(window, maxX, maxY, maxW, maxH) {
+  let x = maxX + maxW - 20;
+  let y = maxY - maxH;
+  let interval = setInterval(() => {
+    if (x == (maxX - 20)) {
+      clearInterval(interval);
+    }
+    x--;
+    window.setPosition(x, y);
+  }, 0.01);
+}
+
+function animateOut(window, maxX, maxY, maxW, maxH) {
+  let x = maxX + maxW - 20;
+  let y = maxY - maxH;
+  let interval = setInterval(() => {
+    if (x == (maxX - 20)) {
+      clearInterval(interval);
+    }
+    x--;
+    window.setPosition(x, y);
+  }, 0.01);
 }
 
 function startBreak() {
@@ -303,7 +443,7 @@ function startBreak() {
     // breakWinLocal.webContents.openDevTools()
     breakWinLocal.once('ready-to-show', () => {
       breakWinLocal.showInactive()
-      log.info(`getBetter: showing window ${localDisplayId + 1} of ${numberOfDisplays()}`)
+      log.info(`getBetter: showing window ${localDisplayId + 1} of ${numberOfDisplays()} `)
       if (process.platform === 'darwin') {
         breakWinLocal.setKiosk(settings.get('fullscreen'))
       }
@@ -337,15 +477,27 @@ function startBreak() {
   if (process.platform === 'darwin') {
     app.dock.hide()
   }
-  // updateTray()
+  updateTray()
 }
 
+function skipbreak() {
+  notificationWins = closeWindows(notificationWins);
+  if (process.platform === 'darwin') {
+    // get focus on the last app
+    Menu.sendActionToFirstResponder('hide:')
+  }
+  if (process.platform === 'darwin') {
+    app.dock.hide()
+  }
+  breakPlanner.nextBreak();
+  updateTray();
+}
 
 function finishBreak(shouldPlaySound = true) {
   breakWins = breakComplete(shouldPlaySound, breakWins)
   log.info('getBetter: finishing Long Break')
   breakPlanner.nextBreak()
-  // updateTray()
+  updateTray()
 }
 
 function breakComplete(shouldPlaySound, windows) {
@@ -353,10 +505,10 @@ function breakComplete(shouldPlaySound, windows) {
   if (shouldPlaySound && !settings.get('silentNotifications')) {
     processWin.webContents.send('playSound', settings.get('audio'), settings.get('volume'))
   }
-  // if (process.platform === 'darwin') {
-  //   // get focus on the last app
-  //   Menu.sendActionToFirstResponder('hide:')
-  // }
+  if (process.platform === 'darwin') {
+    // get focus on the last app
+    Menu.sendActionToFirstResponder('hide:')
+  }
   return closeWindows(windows)
 }
 
@@ -366,11 +518,11 @@ function resumeBreaks(notify = true) {
   } else {
     breakPlanner.resume()
     log.info('getBetter: resuming breaks')
-    if (notify) {
-      showNotification("Resuming breaks")
-    }
+    // if (notify) {
+    //   showNotification("Resuming breaks")
+    // }
   }
-  // updateTray()
+  updateTray()
 }
 
 function calculateBackgroundColor() {
@@ -385,30 +537,30 @@ function postponeBreak(shouldPlaySound = false) {
   breakWins = breakComplete(shouldPlaySound, breakWins)
   breakPlanner.postponeCurrentBreak()
   log.info('getBetter: postponing Long Break')
-  // updateTray()
+  updateTray()
 }
 
 function skipToBreak() {
-  if (microbreakWins) {
-    microbreakWins = breakComplete(false, microbreakWins)
-  }
+  // if (microbreakWins) {
+  //   microbreakWins = breakComplete(false, microbreakWins)
+  // }
   if (breakWins) {
     breakWins = breakComplete(false, breakWins)
   }
   breakPlanner.skipToBreak()
-  log.info('Stretchly: skipping to Long Break')
+  log.info('getBetter: skipping to Long Break')
   updateTray()
 }
 
 function resetBreaks() {
-  if (microbreakWins) {
-    microbreakWins = breakComplete(false, microbreakWins)
-  }
+  // if (microbreakWins) {
+  //   microbreakWins = breakComplete(false, microbreakWins)
+  // }
   if (breakWins) {
     breakWins = breakComplete(false, breakWins)
   }
   breakPlanner.reset()
-  log.info('Stretchly: reseting breaks')
+  log.info('getBetter: reseting breaks')
   updateTray()
 }
 

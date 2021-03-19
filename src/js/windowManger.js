@@ -1,9 +1,9 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, nativeTheme } = require('electron');
 const path = require('path');
 const { displaysX, displaysY } = require('./utils')
 
 const env = process.env.NODE_ENV || 'development';
-console.log("env", env);
+
 let window = null;
 
 let welcomeWindow;
@@ -19,7 +19,7 @@ function createWindowPrototype(modalPath) {
         height: 768,
         autoHideMenuBar: true,
         icon: windowIconPath(),
-        backgroundColor: '#EDEDED',
+        backgroundColor: nativeTheme.shouldUseDarkColors ? "#2d2d2d" : "#ededed",
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true
@@ -43,22 +43,23 @@ function createWindowPrototype(modalPath) {
 
 function windowIconPath() {
     // const params = {
-    //   paused: breakPlanner.isPaused,
-    //   monochrome: settings.get('useMonochromeTrayIcon'),
-    //   inverted: settings.get('useMonochromeInvertedTrayIcon'),
-    //   darkMode: nativeTheme.shouldUseDarkColors,
-    //   platform: process.platform
+    //     paused: breakPlanner.isPaused,
+    //     monochrome: settings.get('useMonochromeTrayIcon'),
+    //     inverted: settings.get('useMonochromeInvertedTrayIcon'),
+    //     darkMode: nativeTheme.shouldUseDarkColors,
+    //     platform: process.platform
     // }
     // const windowIconFileName = new AppIcon(params).windowIconFileName
-    return path.join(__dirname, '/images/logo.png');
+    return path.join(__dirname, '../images/app-icons/icon_16x16_active.png');
 }
 
 
-function createWelcomeWindow() {
-    // if (settings.get('isFirstRun')) {
-    const modalPath = path.join('file://', __dirname, '../screens/welcome.html')
-    if (!window) {
-        welcomeWindow = createWindowPrototype(modalPath);
+function createWelcomeWindow(settings) {
+    if (settings.get('isFirstRun')) {
+        const modalPath = path.join('file://', __dirname, '../screens/welcome.html')
+        if (!window) {
+            welcomeWindow = createWindowPrototype(modalPath);
+        }
     }
 }
 

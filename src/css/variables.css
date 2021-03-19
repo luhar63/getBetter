@@ -26,6 +26,8 @@
     --select-option-bg: #ffffff;
 
     --appearance-border-color: #ffffff;
+    --track-color: #252525;
+    --thumb-color: 252525;
   }
 }
 
@@ -69,5 +71,7 @@
     --select-option-bg: #616161;
 
     --appearance-border-color: #3a3a3a;
+    --track-color: #fff;
+    --thumb-color: rgba(255, 255, 255, 1);
   }
 }
