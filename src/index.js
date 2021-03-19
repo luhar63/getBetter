@@ -197,7 +197,7 @@ ipcMain.on('start-break', function (event) {
 });
 
 ipcMain.on('dnd-time-break', function (event, time) {
-  breakPlanner.pause(time * 60 * 1000);
+  breakPlanner.pause(10 * 1000);
   notificationWins = closeWindows(notificationWins)
 });
 
@@ -240,7 +240,7 @@ function startBreakNotification() {
   // showNotification();
   showNotificationWindow();
   log.info('getBetter: showing Long Break notification')
-  breakPlanner.nextBreakAfterNotification()
+
   updateTray()
 }
 
@@ -489,15 +489,15 @@ function skipbreak() {
   if (process.platform === 'darwin') {
     app.dock.hide()
   }
-  breakPlanner.nextBreak();
+  breakPlanner.nextBreakAfterNotification();
   updateTray();
 }
 
 function finishBreak(shouldPlaySound = true) {
   breakWins = breakComplete(shouldPlaySound, breakWins)
   log.info('getBetter: finishing Long Break')
-  breakPlanner.nextBreak()
-  updateTray()
+  breakPlanner.nextBreakAfterNotification();
+  updateTray();
 }
 
 function breakComplete(shouldPlaySound, windows) {
