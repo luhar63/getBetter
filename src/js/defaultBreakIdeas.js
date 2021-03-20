@@ -1,4 +1,3 @@
-
 module.exports =
 {
   happy: [
@@ -13,20 +12,23 @@ module.exports =
     {
       data: ['Dance like nobody\'s watching', 'Putting on your favorite playlist and letting loose is, of course, ' +
         'good exercise, and it also engages the mind and brings on feelings of inspiration. Dancing to music from a ' +
-        'happy time and place in your life can trigger positive memories, elevating your mood further.', 5, 'to do'],
+        'happy time and place in your life can trigger positive memories, elevating your mood further.', 5, 'Swedish researchers ' +
+      'studied more than 100 people and reported that dancing improves our moods and cognitive skills.\n Want to break a leg?'],
       enabled: true
     },
     {
       data: ['A Random Act of Kindness', 'Spreading kindness not only helps others feel better about themselves -- ' +
         'it can also boost the giver\'s health and happiness, according to research. It\'s a win-win for all. ' +
         'Pro-social spending has been shown to reduce blood pressure and improve heart health.\n' +
-        'Some Ideas: Pay for someone’s lunch, or buy someone’s gas or groceries.', 10, 'to do'],
+        'Some Ideas: Pay for someone’s lunch, or buy someone’s gas or groceries.', 10, 'Did you know that five random ' +
+      'acts of kindness in a week will increase your happiness for up to three months? Would you like to try spreading some happiness?'],
       enabled: true
     },
     {
       data: ['Take a Picture of Anything You Like', 'Believe it or not, pictures afford immortality. Memories captured ' +
         'do not grow younger or older in a photograph. Rather, they remain exactly the same way when the photo was taken. ' +
-        'You too can make moments last!', 5, 'to do'],
+        'You too can make moments last!', 5, 'By picking up a camera one does not only be present and creative, but also ' +
+      'practices mindfulness, which reduces stress and makes us feel more balanced. Do you want to capture some memories?'],
       enabled: true
     },
     {
@@ -51,7 +53,7 @@ module.exports =
       data: ['Going outside', 'Nature is linked to positive emotions and decreased stress and anxiety. Spending time ' +
         'walking among or simply looking at trees lowers blood pressure and reduces the stress-related hormones ' +
         'cortisol and adrenaline. Anxiety, depression and anger are notably decreased after spending time outdoors.',
-        10, 'to do'],
+        10, 'Did you know that 20 minutes a day outside has the same effect as an antidepressant? Do you want to go outside?'],
       enabled: true
     },
     {
