@@ -35,9 +35,9 @@ function createWindowPrototype(modalPath) {
             window = null
         })
     }
-    if (env === 'development') {
-        window.webContents.openDevTools();
-    }
+    // if (env === 'development') {
+    //     window.webContents.openDevTools();
+    // }
     return window;
 }
 
@@ -61,6 +61,8 @@ function createWelcomeWindow(settings) {
             welcomeWindow = createWindowPrototype(modalPath);
         }
     }
+
+
 }
 
 function createMoodsWindow() {
@@ -70,6 +72,7 @@ function createMoodsWindow() {
     } else {
         moodsWindow = createWindowPrototype(modalPath);
     }
+    return moodsWindow || window;
 }
 
 

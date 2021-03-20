@@ -5,10 +5,10 @@ const Backend = require('i18next-node-fs-backend')
 // const { BrowserWindow } = require('electron').remote
 const path = require('path');
 
-const { createWelcomeWindow } = require('./js/windowManger')
+const { createWelcomeWindow, createMoodsWindow } = require('./js/windowManger')
 
 
-const { initPowerMonitoring } = require('./js/powermanagement');
+// const { initPowerMonitoring } = require('./js/powermanagement');
 
 process.on('uncaughtException', (err, _) => {
   log.error(err)
@@ -65,6 +65,8 @@ let welcomeWin = null;
 let appIcon = null;
 let notificationWins = null;
 let preferencesWin = null
+let moodsWindow;
+
 
 app.setAppUserModelId('gameOfMinds.getbetter')
 
@@ -140,7 +142,7 @@ function loadSettings() {
     updateTray()
   })
   createWelcomeWindow(settings);
-  // checkMoodStatus(settings);
+  checkMoodStatus(settings);
   // showNotificationWindow();
 }
 
@@ -154,6 +156,39 @@ function loadSettings() {
 //     moodsWindow = createWindowPrototype(modalPath);
 //   }
 // }
+
+
+
+function onSuspendOrLock() {
+  log.info('System: suspend or lock')
+  if (!breakPlanner.isPaused) {
+    pausedForSuspendOrLock = true
+    pauseBreaks(1)
+    updateTray()
+  }
+}
+
+function onResumeOrUnlock() {
+  log.info('System: resume or unlock')
+  if (pausedForSuspendOrLock) {
+    pausedForSuspendOrLock = false
+    resumeBreaks(false)
+  } else if (breakPlanner.isPaused) {
+    // corrrect the planner for the time spent in suspend
+    breakPlanner.correctScheduler()
+  }
+  updateTray()
+  checkMoodStatus();
+}
+
+
+function initPowerMonitoring() {
+  const electron = require('electron')
+  electron.powerMonitor.on('suspend', onSuspendOrLock)
+  electron.powerMonitor.on('lock-screen', onSuspendOrLock)
+  electron.powerMonitor.on('resume', onResumeOrUnlock)
+  electron.powerMonitor.on('unlock-screen', onResumeOrUnlock)
+}
 
 
 function startProcessWin() {
@@ -205,7 +240,7 @@ ipcMain.on('start-break', function (event) {
 
 ipcMain.on('dnd-time-break', function (event, time) {
   breakPlanner.offNotificationWindow();
-  breakPlanner.pause(10 * 1000);
+  breakPlanner.pause(time * 60 * 1000);
   notificationWins = closeWindows(notificationWins)
 });
 
@@ -217,7 +252,7 @@ function closeWindows(windowArray) {
     windowArray[i].hide();
     windowArray[i].close();
   }
-  return null
+  return null;
 }
 
 
@@ -231,12 +266,28 @@ function numberOfDisplays() {
 }
 
 function checkMoodStatus(settings) {
-  if (get('next-mood-time') == null) {
-
+  if (!settings.get('next-mood-time')) {
+    moodsWindow = createMoodsWindow();
+  } else {
+    moodtime = settings.get('next-mood-time');
+    if (moodtime < Date.now()) {
+      moodsWindow = createMoodsWindow();
+    }
   }
+
 }
 
-function loadIdeas() {
+ipcMain.on('mood', function (event, mood) {
+  // console.log("MOOD", mood);
+  settings.set('current-mood', mood);
+  loadIdeas(mood);
+  moodsWindow.hide();
+  moodsWindow.close();
+  moodsWindow = null;
+});
+
+
+function loadIdeas(mood) {
   let breakIdeasData;
   let microbreakIdeasData;
   if (settings.get('useIdeasFromSettings')) {
@@ -246,7 +297,7 @@ function loadIdeas() {
     breakIdeasData = require('./js/defaultBreakIdeas')
     // microbreakIdeasData = require('./utils/defaultMicrobreakIdeas')
   }
-  breakIdeas = new IdeasLoader(breakIdeasData).ideas()
+  breakIdeas = new IdeasLoader(breakIdeasData[mood]).ideas()
   // microbreakIdeas = new IdeasLoader(microbreakIdeasData).ideas()
 }
 
@@ -261,14 +312,18 @@ function startBreakNotification() {
 
 
 function showNotificationWindow() {
+  if (!breakIdeas) {
+    loadIdeas(settings.get('current-mood'))
+  }
   const electron = require('electron')
   const startTime = Date.now();
   const modalPath = path.join('file://', __dirname, '/screens/notification.html')
-  notificationWins = []
+  notificationWins = [];
 
-  // const defaultNextIdea = settings.get('ideas') ? breakIdeas.randomElement : ['', '']
+  const defaultNextIdea = settings.get('ideas') ? breakIdeas.randomElement : ['', '', '', 1];
   // const idea = nextIdea ? (nextIdea.map((val, index) => val || defaultNextIdea[index])) : defaultNextIdea
-  // nextIdea = null
+  nextIdea = defaultNextIdea;
+
   const breakDuration = settings.get('breakDuration');
   const strictMode = settings.get('breakStrictMode');
   const postponesLimit = settings.get('breakPostponesLimit');
@@ -330,7 +385,7 @@ function showNotificationWindow() {
         notificationWinLocal.setKiosk(settings.get('fullscreen'))
       }
       // notificationWinLocal.webContents.send('breakIdea', idea)
-      notificationWinLocal.webContents.send('notify', startTime, breakDuration, strictMode, postponable, postponableDurationPercent, settings)
+      notificationWinLocal.webContents.send('notify', nextIdea, settings)
       // if (!settings.get('fullscreen') && process.platform !== 'darwin') {
       //   setTimeout(() => {
       //     notificationWinLocal.center()
@@ -393,16 +448,14 @@ function animateOut(window, maxX, maxY, maxW, maxH) {
 }
 
 function startBreak() {
-  if (!breakIdeas) {
-    loadIdeas()
-  }
+
   if (breakWins) {
     log.warn('getBetter: Long Break already running, not starting Long Break')
     return
   }
 
   const startTime = Date.now()
-  const breakDuration = settings.get('breakDuration')
+  let breakDuration = settings.get('breakDuration')
   const strictMode = settings.get('breakStrictMode')
   const postponesLimit = settings.get('breakPostponesLimit')
   const postponableDurationPercent = settings.get('breakPostponableDurationPercent')
@@ -415,18 +468,20 @@ function startBreak() {
       if (Utils.canPostpone(postponable, passedPercent, postponableDurationPercent)) {
         postponeBreak()
       } else if (Utils.canSkip(strictMode, postponable, passedPercent, postponableDurationPercent)) {
-        finishBreak(false)
+        finishBreak(false);
       }
     })
   }
 
-  const modalPath = path.join('file://', __dirname, '/screens/break.html')
+  const modalPath = path.join('file://', __dirname, '/screens/break.html');
   breakWins = []
 
-  const defaultNextIdea = settings.get('ideas') ? breakIdeas.randomElement : ['', '']
-  const idea = nextIdea ? (nextIdea.map((val, index) => val || defaultNextIdea[index])) : defaultNextIdea
-  nextIdea = null
-
+  // const defaultNextIdea = settings.get('ideas') ? breakIdeas.randomElement : ['', '']
+  // const idea = nextIdea ? (nextIdea.map((val, index) => val || defaultNextIdea[index])) : defaultNextIdea
+  // nextIdea = null
+  idea = nextIdea;
+  breakDuration = idea[2] * 60 * 1000;
+  console.log("breakDuration", breakDuration);
   if (settings.get('breakStartSoundPlaying') && !settings.get('silentNotifications')) {
     processWin.webContents.send('playSound', settings.get('audio'), settings.get('volume'))
   }
@@ -476,7 +531,7 @@ function startBreak() {
         breakWinLocal.setKiosk(settings.get('fullscreen'))
       }
       if (localDisplayId === 0) {
-        breakPlanner.emit('breakStarted', true)
+        breakPlanner.emit('breakStarted', true, breakDuration)
         log.info('getBetter: starting Mini Break')
       }
       breakWinLocal.webContents.send('breakIdea', idea)

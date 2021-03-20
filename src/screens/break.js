@@ -29,8 +29,8 @@ ipcRenderer.on('progress', (event, started, duration, strictMode, postpone, post
     const progressTime = document.querySelector('#progress-time')
     const postponeElement = document.querySelector('#postpone')
     const closeElement = document.querySelector('#close')
-    const mainColor = settings.data.mainColor
-    document.body.classList.add(mainColor.substring(1))
+    const mainColor = settings.data.mainColor;
+    document.body.classList.add(mainColor.substring(1));
 
     document.querySelectorAll('.tiptext').forEach(tt => {
         const keyboardShortcut = settings.data.endBreakShortcut
@@ -38,8 +38,10 @@ ipcRenderer.on('progress', (event, started, duration, strictMode, postpone, post
     })
 
     window.setInterval(() => {
+        console.log(started, Date.now(), duration);
         if (Date.now() - started < duration) {
             const passedPercent = (Date.now() - started) / duration * 100
+            console.log(started, Date.now(), duration, passedPercent);
             Utils.canSkip(strictMode, postpone, passedPercent, postponePercent)
             postponeElement.style.display =
                 Utils.canPostpone(postpone, passedPercent, postponePercent) ? 'flex' : 'none'

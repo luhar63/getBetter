@@ -1,21 +1,16 @@
 const { ipcRenderer, remote } = require('electron')
 const Utils = remote.require('./js/utils')
 
-ipcRenderer.on('notify', (event, started, duration, strictMode, postpone, postponePercent, settings) => {
+const defaultText = "You have been on the screen for a long time now. You should take a break.";
+
+ipcRenderer.on('notify', (event, idea, settings) => {
     const progress = document.querySelector('#progress')
     const progressTime = document.querySelector('#progress-time')
     const postponeElement = document.querySelector('#postpone')
     const closeElement = document.querySelector('#close')
-    const mainColor = settings.data.mainColor
-    document.body.classList.add(mainColor.substring(1))
-    // const notifyAfterTime = document.querySelector('.notification-text .time');
-
-
-
-
-    document.querySelectorAll('.tiptext').forEach(tt => {
-        const keyboardShortcut = settings.data.endBreakShortcut
-        tt.innerHTML = Utils.formatKeyboardShortcut(keyboardShortcut)
+    document.querySelectorAll('.notification-text').forEach(tt => {
+        // const keyboardShortcut = settings.data.endBreakShortcut
+        tt.innerHTML = idea[3] || defaultText;
     });
 
     //     // window.setInterval(() => {

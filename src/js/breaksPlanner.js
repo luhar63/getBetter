@@ -22,9 +22,9 @@ class BreaksPlanner extends EventEmitter {
             this.scheduler.plan()
         })
 
-        this.on('breakStarted', (shouldPlaySound) => {
-            const interval = this.settings.get('breakDuration')
-            this.scheduler = new Scheduler(() => this.emit('finishBreak', shouldPlaySound), interval, 'finishBreak')
+        this.on('breakStarted', (shouldPlaySound, duration) => {
+            const interval = duration || this.settings.get('breakDuration')
+            this.scheduler = new Scheduler(() => this.emit('finishBreak', shouldPlaySound), duration, 'finishBreak')
             this.scheduler.plan()
         })
 

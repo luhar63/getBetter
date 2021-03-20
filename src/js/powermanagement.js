@@ -5,23 +5,23 @@ const { createMoodsWindow } = require('./windowManger')
 let moodsWindow;
 function onSuspendOrLock() {
     log.info('System: suspend or lock')
-    // if (!breakPlanner.isPaused) {
-    //     pausedForSuspendOrLock = true
-    //     pauseBreaks(1)
-    //     updateTray()
-    // }
+    if (!breakPlanner.isPaused) {
+        pausedForSuspendOrLock = true
+        pauseBreaks(1)
+        updateTray()
+    }
 }
 
 function onResumeOrUnlock() {
     log.info('System: resume or unlock')
-    // if (pausedForSuspendOrLock) {
-    //     pausedForSuspendOrLock = false
-    //     resumeBreaks(false)
-    // } else if (breakPlanner.isPaused) {
-    //     // corrrect the planner for the time spent in suspend
-    //     breakPlanner.correctScheduler()
-    // }
-    // updateTray()
+    if (pausedForSuspendOrLock) {
+        pausedForSuspendOrLock = false
+        resumeBreaks(false)
+    } else if (breakPlanner.isPaused) {
+        // corrrect the planner for the time spent in suspend
+        breakPlanner.correctScheduler()
+    }
+    updateTray()
     createMoodsWindow();
 }
 

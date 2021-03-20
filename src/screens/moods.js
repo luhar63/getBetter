@@ -1,5 +1,5 @@
 
-
+const { ipcRenderer, remote } = require('electron')
 var moods = ["How are you feeling today?", "How's your mood right now?"];
 var currentMood = "";
 
@@ -27,8 +27,9 @@ function clickHandler(event) {
     // Log the clicked element in the console
     console.log(event.target);
     resetAllMoods();
-    event.target.closest('.mood').setAttribute("class", "mood selected");
-
+    let li = event.target.closest('.mood');
+    li.setAttribute("class", "mood selected");
+    ipcRenderer.send('mood', li.dataset.mood);
 
 }
 // elm.addEventListener('click', function (event) {
