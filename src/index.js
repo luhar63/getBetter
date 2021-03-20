@@ -140,7 +140,7 @@ function loadSettings() {
     updateTray()
   })
   createWelcomeWindow(settings);
-  checkMoodStatus(settings);
+  // checkMoodStatus(settings);
   // showNotificationWindow();
 }
 
