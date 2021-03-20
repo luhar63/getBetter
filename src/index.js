@@ -20,7 +20,7 @@ process.on('uncaughtException', (err, _) => {
   }
   dialog.showMessageBox(dialogOpts).then((returnValue) => {
 
-    app.quit()
+    app.quit();
   })
 })
 
@@ -289,30 +289,29 @@ function showNotificationWindow() {
       }
     };
 
-    // asdaksdaksjhd khasdkhas dkhkhl asdkj
-    // if (settings.get('fullscreen') && process.platform !== 'darwin') {
-    //   windowOptions.width = Utils.displaysWidth(localDisplayId)
-    //   windowOptions.height = Utils.displaysHeight(localDisplayId)
-    //   windowOptions.x = Utils.displaysX(localDisplayId, 0, true)
-    //   windowOptions.y = Utils.displaysY(localDisplayId, 0, true)
-    // } else if (!(settings.get('fullscreen') && process.platform === 'win32')) {
+    if (settings.get('fullscreen') && process.platform !== 'darwin') {
+      windowOptions.width = Utils.displaysWidth(localDisplayId)
+      windowOptions.height = Utils.displaysHeight(localDisplayId)
+      windowOptions.x = Utils.displaysX(localDisplayId, 0, true, true)
+      windowOptions.y = Utils.displaysY(localDisplayId, 0, true, true)
+    } else if (!(settings.get('fullscreen') && process.platform === 'win32')) {
+      windowOptions.x = Utils.displaysX(localDisplayId, windowOptions.width, false, true)
+      windowOptions.y = Utils.displaysY(localDisplayId, windowOptions.height, false, true)
+    }
 
-    // }
-    // theScreen = electron.screen.getDisplayNearestPoint(electron.screen.getCursorScreenPoint())
-    // console.log(electron.screen.getPrimaryDisplay(), )
-    let bounds = electron.screen.getPrimaryDisplay().bounds
 
-    windowOptions.x = bounds.width;
-    windowOptions.y = bounds.height;
+
+    // windowOptions.x = bounds.width;
+    // windowOptions.y = bounds.height;
 
     let notificationWinLocal = new BrowserWindow(windowOptions);
-    console.log(bounds.width, bounds.height, windowOptions.x, windowOptions.y, notificationWinLocal.getPosition());
-    notificationWinLocal.hide();
+    // console.log(bounds.width, bounds.height, windowOptions.x, windowOptions.y, notificationWinLocal.getPosition());
+    // notificationWinLocal.hide();
     notificationWinLocal.setOpacity(0);
     notificationWinLocal.once('ready-to-show', () => {
 
       // notificationWinLocal.setPosition(windowOptions.x, windowOptions.y);
-      animateIn(notificationWinLocal, (bounds.width - windowOptions.width + 20), (bounds.height - 100), windowOptions.width, windowOptions.height);
+      animateIn(notificationWinLocal, windowOptions.x, windowOptions.y, windowOptions.width, windowOptions.height);
       // notificationWinLocal.setSize(windowOptions.width, windowOptions.height)
       notificationWinLocal.showInactive()
       log.info(`getBetter: showing window ${localDisplayId + 1} of ${numberOfDisplays()}`)
@@ -352,14 +351,14 @@ function showNotificationWindow() {
 
 function animateIn(window, maxX, maxY, maxW, maxH) {
 
-  let x = maxX + maxW - 20;
-  let y = maxY - maxH;
+  let x = maxX + maxW;
+  let y = maxY - 75;
   let flag = true;
   let interval = setInterval(() => {
-    if (x <= (maxX - 20)) {
+    if (x <= (maxX + 10)) {
       clearInterval(interval);
     }
-    x -= 5;
+    x -= 10;
     window.setPosition(x, y);
     if (flag) {
       window.show();

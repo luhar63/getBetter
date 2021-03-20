@@ -5,7 +5,7 @@ function numberOfDisplays() {
     return electron.screen.getAllDisplays().length
 }
 
-function displaysX(displayID = -1, width = 1024, fullscreen = false) {
+function displaysX(displayID = -1, width = 1024, fullscreen = false, last = false) {
     const electron = require('electron')
     let theScreen
     if (displayID === -1) {
@@ -19,6 +19,13 @@ function displaysX(displayID = -1, width = 1024, fullscreen = false) {
         theScreen = screens[displayID]
     }
     const bounds = theScreen.bounds
+    if (last) {
+        if (fullscreen) {
+            return Math.ceil(bounds.x + (bounds.width - width))
+        } else {
+            return Math.ceil(bounds.x + ((bounds.width - width)))
+        }
+    }
     if (fullscreen) {
         return Math.ceil(bounds.x)
     } else {
@@ -26,7 +33,7 @@ function displaysX(displayID = -1, width = 1024, fullscreen = false) {
     }
 }
 
-function displaysY(displayID = -1, height = 768, fullscreen = false) {
+function displaysY(displayID = -1, height = 768, fullscreen = false, last = false) {
     const electron = require('electron')
     let theScreen
     if (displayID === -1) {
@@ -40,6 +47,14 @@ function displaysY(displayID = -1, height = 768, fullscreen = false) {
         theScreen = screens[displayID]
     }
     const bounds = theScreen.bounds
+
+    if (last) {
+        if (fullscreen) {
+            return Math.ceil(bounds.y + (bounds.height - height));
+        } else {
+            return Math.ceil(bounds.y + ((bounds.height - height)));
+        }
+    }
     if (fullscreen) {
         return Math.ceil(bounds.y)
     } else {
