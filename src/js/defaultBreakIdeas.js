@@ -2,28 +2,30 @@ module.exports = [
   {
     happy: [
       {
-        data:['A Quick exercise', 'A burst of activity gets your heart rate up, and even if brief, will activate ' +
+        data:['A Quick exercise', 'According to Harvard health, exercises like walking can enhance brain activity and ' +
+        'can reduce the risk of cardiovascular problems by 31%. A burst of activity gets your heart rate up, and even if brief, will activate ' +
       'several neurotransmitters, including dopamine, serotonin, and norepinephrine that enhance your mood. ' +
-      'It can be anything like a set of 20 jumping jacks, 10 push-ups or sit-ups, or running in place for 30 seconds.', 5],
+      'Some examples: Set of 20 jumping jacks, 10 push-ups or sit-ups, or running in place for 30 seconds.',
+          5, 'Did you know that exercise helps in creating new brain cells? Do you want to try doing a quick exercise?'],
         enabled: true
       },
       {
         data:['Dance like nobody\'s watching', 'Putting on your favorite playlist and letting loose is, of course, ' +
         'good exercise, and it also engages the mind and brings on feelings of inspiration. Dancing to music from a ' +
-        'happy time and place in your life can trigger positive memories, elevating your mood further.', 5],
+        'happy time and place in your life can trigger positive memories, elevating your mood further.', 5,'to do'],
         enabled: true
       },
       {
         data: ['A Random Act of Kindness', 'Spreading kindness not only helps others feel better about themselves -- ' +
         'it can also boost the giver\'s health and happiness, according to research. It\'s a win-win for all. ' +
         'Pro-social spending has been shown to reduce blood pressure and improve heart health.\n' +
-        'Some Ideas: Pay for someone’s lunch, or buy someone’s gas or groceries.', 10],
+        'Some Ideas: Pay for someone’s lunch, or buy someone’s gas or groceries.', 10,'to do'],
         enabled: true
       },
       {
         data: ['Take a Picture of Anything You Like', 'Believe it or not, pictures afford immortality. Memories captured ' +
         'do not grow younger or older in a photograph. Rather, they remain exactly the same way when the photo was taken. ' +
-        'You too can make moments last!', 5],
+        'You too can make moments last!', 5,'to do'],
         enabled: true
       },
       {
@@ -31,14 +33,14 @@ module.exports = [
         '“feel-good” neurotransmitter. Music in itself is healing. It’s an explosive expression of humanity. ' +
         'It’s something we are all touched by. No matter what culture we’re from. It also decreases levels of the stress ' +
         'hormone “cortisol” in your body, which counteracts the effects of chronic stress. Put on your favorite song and ' +
-        'have a blast!', 5],
+        'have a blast!', 5,'to do'],
         enabled: true
       },
       {
         data: ['Sending a Snail Mail', 'Do you know What the world needs now? Handwritten cards and letters. ' +
         'Handwritten notes and cards may carry more weight with their recipients than their electronic counterparts, ' +
         'and research shows that they make us feel good, too.  Everyone loves receiving cards or letters as they are ' +
-        'something to cherish. Sit down and write a note to send to someone you love and value.', 10],
+        'something to cherish. Sit down and write a note to send to someone you love and value.', 10,'to do'],
         enabled: true
       }
       ],
@@ -47,14 +49,15 @@ module.exports = [
         {
           data: ['Going outside', 'Nature is linked to positive emotions and decreased stress and anxiety. Spending time ' +
           'walking among or simply looking at trees lowers blood pressure and reduces the stress-related hormones ' +
-          'cortisol and adrenaline. Anxiety, depression and anger are notably decreased after spending time outdoors.', 10],
+          'cortisol and adrenaline. Anxiety, depression and anger are notably decreased after spending time outdoors.',
+            10,'to do'],
           enabled: true
         },
         {
           data: ['Writing down feelings', 'When we are angry at someone, writing them a letter and not sending it can ' +
           'help. While that might seem like a waste of time, science reveals recording our feelings is great for ' +
           'clarifying our thoughts, solving problems more efficiently, relieving stress, and more. Some researchers ' +
-          'studied brain scans of volunteers and found that the act of recording their experiences calmed them.', 10],
+          'studied brain scans of volunteers and found that the act of recording their experiences calmed them.', 10, 'to do'],
           enabled: true
         }
       ],
@@ -63,13 +66,13 @@ module.exports = [
        {
          data: ['Decluttering our workspace', 'Reorganizing workspace, cleaning up any junk that might be lying around ' +
          'and getting rid of unused items that are just taking up space can also help in decluttering our mind and ' +
-         'thoughts. A clean space helps to focus at work and is often linked to positive emotions like happiness.', 10],
+         'thoughts. A clean space helps to focus at work and is often linked to positive emotions like happiness.', 10,'to do'],
          enabled: true
        },
        {
          data: ['Going outside', 'Nature is linked to positive emotions and decreased stress and anxiety. Spending time ' +
          'walking among or simply looking at trees lowers blood pressure and reduces the stress-related hormones ' +
-         'cortisol and adrenaline. Anxiety, depression and anger are notably decreased after spending time outdoors.', 10],
+         'cortisol and adrenaline. Anxiety, depression and anger are notably decreased after spending time outdoors.', 10,'to do'],
          enabled: true
        }
      ],
