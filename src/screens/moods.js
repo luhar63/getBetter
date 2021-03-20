@@ -1,3 +1,5 @@
+
+
 var moods = ["How are you feeling today?", "How's your mood right now?"];
 var currentMood = "";
 
@@ -26,6 +28,7 @@ function clickHandler(event) {
     console.log(event.target);
     resetAllMoods();
     event.target.closest('.mood').setAttribute("class", "mood selected");
+
 
 }
 // elm.addEventListener('click', function (event) {

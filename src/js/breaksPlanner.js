@@ -8,6 +8,7 @@ class BreaksPlanner extends EventEmitter {
     constructor(settings) {
         super()
         this.settings = settings
+        this.onNotificationScreen = false;
         this.breakNumber = 0
         this.postponesNumber = 0
         this.scheduler = null
@@ -62,6 +63,9 @@ class BreaksPlanner extends EventEmitter {
     }
 
     nextBreak() {
+        if (this.onNotificationScreen) {
+            return;
+        }
         console.log("inside, nextbreak");
         this.postponesNumber = 0
         if (this.scheduler) this.scheduler.cancel()
@@ -124,6 +128,7 @@ class BreaksPlanner extends EventEmitter {
         console.log("Scheduler");
         this.scheduler = new Scheduler(() => this.emit(eventName), breakNotificationInterval, eventName)
         this.scheduler.plan()
+        this.onNotificationScreen = false;
     }
 
     postponeCurrentBreak() {
@@ -132,13 +137,15 @@ class BreaksPlanner extends EventEmitter {
         let postponeTime, eventName
         const scheduledBreakType = this._scheduledBreakType
         const notification = this.settings.get(`${scheduledBreakType}Notification`)
-        if (notification && this.settings.get(`${scheduledBreakType}PostponeTime`) > this.settings.get(`${scheduledBreakType}NotificationInterval`)) {
-            postponeTime = this.settings.get(`${scheduledBreakType}PostponeTime`) - this.settings.get(`${scheduledBreakType}NotificationInterval`)
-            eventName = `start${scheduledBreakType.charAt(0).toUpperCase() + scheduledBreakType.slice(1)}Notification`
-        } else {
-            postponeTime = this.settings.get(`${scheduledBreakType}PostponeTime`)
-            eventName = `start${scheduledBreakType.charAt(0).toUpperCase() + scheduledBreakType.slice(1)}`
-        }
+        // if (notification && this.settings.get(`${scheduledBreakType}PostponeTime`) > this.settings.get(`${scheduledBreakType}NotificationInterval`)) {
+        //     postponeTime = this.settings.get(`${scheduledBreakType}PostponeTime`) - this.settings.get(`${scheduledBreakType}NotificationInterval`)
+        //     eventName = `start${scheduledBreakType.charAt(0).toUpperCase() + scheduledBreakType.slice(1)}Notification`
+        // } else {
+        //     postponeTime = this.settings.get(`${scheduledBreakType}PostponeTime`)
+        //     eventName = `start${scheduledBreakType.charAt(0).toUpperCase() + scheduledBreakType.slice(1)}`
+        // }
+        postponeTime = this.settings.get(`${scheduledBreakType}PostponeTime`) - this.settings.get(`${scheduledBreakType}NotificationInterval`)
+        eventName = `start${scheduledBreakType.charAt(0).toUpperCase() + scheduledBreakType.slice(1)}Notification`
         console.log("postponeCurrentBreak", notification, postponeTime, eventName);
         this.scheduler = new Scheduler(() => this.emit(eventName), postponeTime, eventName)
         this.scheduler.plan()
@@ -221,6 +228,13 @@ class BreaksPlanner extends EventEmitter {
         } else {
             this.naturalBreaksManager.stop()
         }
+    }
+
+    onNotificationWindow() {
+        this.onNotificationScreen = true;
+    }
+    offNotificationWindow() {
+        this.onNotificationScreen = false;
     }
 
     // setDND(time) {

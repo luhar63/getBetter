@@ -50,5 +50,6 @@ module.exports = {
     themeSource: 'system',
     endBreakShortcut: 'CmdOrCtrl+X',
     breakWindowWidth: 0.85,
-    breakWindowHeight: 0.85
+    breakWindowHeight: 0.85,
+    moodQuestionInterval: 12 * 60 * 60 * 1000
 }

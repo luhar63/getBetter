@@ -72,7 +72,8 @@ const AppSettings = require('./js/settings');
 const Utils = require('./js/utils');
 const BreaksPlanner = require('./js/breaksPlanner')
 const IdeasLoader = require('./js/ideasLoader')
-const AppIcon = require('./js/appIcon')
+const AppIcon = require('./js/appIcon');
+const { get } = require('http');
 // const Command = require('./js/commands')
 
 const gotTheLock = app.requestSingleInstanceLock()
@@ -139,6 +140,7 @@ function loadSettings() {
     updateTray()
   })
   createWelcomeWindow(settings);
+  checkMoodStatus(settings);
   // showNotificationWindow();
 }
 
@@ -191,15 +193,18 @@ ipcMain.on('postpone-break', function (event, shouldPlaySound) {
 })
 
 ipcMain.on('skip-break', function (event) {
+  breakPlanner.offNotificationWindow();
   skipbreak();
 });
 
 ipcMain.on('start-break', function (event) {
+  breakPlanner.offNotificationWindow();
   notificationWins = closeWindows(notificationWins);
   startBreak();
 });
 
 ipcMain.on('dnd-time-break', function (event, time) {
+  breakPlanner.offNotificationWindow();
   breakPlanner.pause(10 * 1000);
   notificationWins = closeWindows(notificationWins)
 });
@@ -223,6 +228,12 @@ ipcMain.on('finish-break', function (event, shouldPlaySound) {
 function numberOfDisplays() {
   const electron = require('electron')
   return electron.screen.getAllDisplays().length
+}
+
+function checkMoodStatus(settings) {
+  if (get('next-mood-time') == null) {
+
+  }
 }
 
 function loadIdeas() {
@@ -271,7 +282,7 @@ function showNotificationWindow() {
   for (let localDisplayId = 0; localDisplayId < numberOfDisplays(); localDisplayId++) {
     const windowOptions = {
       width: Number.parseInt(Utils.displaysWidth(localDisplayId) * 0.35),
-      height: Number.parseInt(Utils.displaysHeight(localDisplayId) * 0.31),
+      height: Number.parseInt(Utils.displaysHeight(localDisplayId) * 0.35),
       autoHideMenuBar: true,
       icon: windowIconPath(),
       resizable: false,
@@ -345,7 +356,7 @@ function showNotificationWindow() {
   if (process.platform === 'darwin') {
     app.dock.hide()
   }
-
+  breakPlanner.onNotificationWindow();
   //todo: closing of windows "notificationWins"
 }
 
