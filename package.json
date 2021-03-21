@@ -12,8 +12,8 @@
     "dev": "cross-env NODE_ENV=development electron . --enable-logging --remote-debugging-port=9222",
     "electromon": "electromon .",
     "postinstall": "electron-builder install-app-deps",
-    "pack": "electron-builder build --dir",
-    "dist": "electron-builder build",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
     "test": "mocha test --exclude test/main.js",
     "test-e2e": "mocha test/main.js",
     "test-single": "mocha $1",
@@ -29,6 +29,7 @@
   },
   "build": {
     "appId": "gameofMinds.getBetter",
+    "asar": true,
     "productName": "getBetter",
     "dmg": {
       "icon": "build/icon.icns",
