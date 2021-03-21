@@ -5,7 +5,8 @@ const Backend = require('i18next-node-fs-backend')
 // const { BrowserWindow } = require('electron').remote
 const path = require('path');
 
-const { createWelcomeWindow, createMoodsWindow } = require('./js/windowManger')
+const env = process.env.NODE_ENV || 'development';
+const { createWelcomeWindow } = require('./js/windowManger')
 
 
 // const { initPowerMonitoring } = require('./js/powermanagement');
@@ -277,6 +278,13 @@ function numberOfDisplays() {
 }
 
 function checkMoodStatus(settings) {
+  if (settings.get('isFirstRun')) {
+    this.setTimeout(() => {
+      checkMoodStatus(settings);
+      // }, 300000);
+    }, 30000);
+    return
+  }
   if (!settings.get('next-mood-time')) {
     moodsWindow = createMoodsWindow();
   } else {
@@ -286,6 +294,8 @@ function checkMoodStatus(settings) {
     }
   }
 }
+
+
 
 ipcMain.on('mood', function (event, mood) {
   // console.log("MOOD", mood);
@@ -925,3 +935,41 @@ ipcMain.on('save-setting', function (event, key, value) {
 
   updateTray()
 })
+
+
+function createMoodsWindow() {
+  if (moodsWindow) {
+    moodsWindow.show()
+    return;
+  }
+  const modalPath = path.join('file://', __dirname, './screens/moods.html');
+  moodsWindow = new BrowserWindow({
+    x: Utils.displaysX(-1, 640),
+    y: Utils.displaysY(-1, 420),
+    width: 640,
+    height: 420,
+    minHeight: 420,
+    minWidth: 640,
+
+    icon: windowIconPath(),
+    backgroundColor: nativeTheme.shouldUseDarkColors ? "#2d2d2d" : "#ededed",
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true
+    },
+    title: 'getBetter',
+    skipTaskbar: true,
+    focusable: true,
+    frame: false,
+  });
+  moodsWindow.loadURL(modalPath)
+  if (moodsWindow) {
+    moodsWindow.on('closed', () => {
+      moodsWindow = null
+    })
+  }
+  if (env === 'development') {
+    moodsWindow.webContents.openDevTools();
+  }
+  return moodsWindow;
+}

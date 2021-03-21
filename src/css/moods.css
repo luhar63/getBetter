@@ -1,4 +1,7 @@
 @import url(./index.css);
+body.moods-page {
+  background: #e5e5e5;
+}
 .moods-page .welcome-logo {
   display: flex;
   justify-content: center;
@@ -17,6 +20,7 @@
   font-size: 2.4rem;
   margin-block-start: 10px;
   margin-right: 38px;
+  color: #252525;
 }
 .moods-page .main-content {
   display: flex;
@@ -46,8 +50,11 @@
 .mood {
   padding: 10px 1.5%;
 }
+.text {
+  color: #252525;
+}
 .mood:hover {
-  background: #ecf6ff;
+  background: #cbd6e03d;
   cursor: pointer;
 }
 

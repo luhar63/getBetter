@@ -11,13 +11,13 @@ let welcomeWindow;
 let moodsWindow;
 
 
-function createWindowPrototype(modalPath) {
+function createWindowPrototype(modalPath, width, height) {
     window = new BrowserWindow({
-        x: displaysX(-1, 1000),
-        y: displaysY(),
-        width: 1024,
-        height: 768,
-        autoHideMenuBar: true,
+        x: displaysX(-1, width),
+        y: displaysY(-1, height),
+        width: width,
+        height: height,
+        frame: false,
         icon: windowIconPath(),
         backgroundColor: nativeTheme.shouldUseDarkColors ? "#2d2d2d" : "#ededed",
         webPreferences: {
@@ -58,22 +58,22 @@ function createWelcomeWindow(settings) {
     if (settings.get('isFirstRun')) {
         const modalPath = path.join('file://', __dirname, '../screens/welcome.html')
         if (!window) {
-            welcomeWindow = createWindowPrototype(modalPath);
+            welcomeWindow = createWindowPrototype(modalPath, 768, 600);
         }
     }
 
 
 }
 
-function createMoodsWindow() {
-    const modalPath = path.join('file://', __dirname, '../screens/moods.html')
-    if (window) {
-        window.loadURL(modalPath);
-    } else {
-        moodsWindow = createWindowPrototype(modalPath);
-    }
-    return moodsWindow || window;
-}
+// function createMoodsWindow() {
+//     const modalPath = path.join('file://', __dirname, '../screens/moods.html')
+//     if (window) {
+//         window.loadURL(modalPath);
+//     } else {
+//         moodsWindow = createWindowPrototype(modalPath);
+//     }
+//     return moodsWindow || window;
+// }
 
 
-module.exports = { createWelcomeWindow, createMoodsWindow }
+module.exports = { createWelcomeWindow }
