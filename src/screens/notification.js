@@ -3,14 +3,41 @@ const Utils = remote.require('./js/utils')
 
 const defaultText = "You have been on the screen for a long time now. You should take a break.";
 
-ipcRenderer.on('notify', (event, idea, settings) => {
-    const progress = document.querySelector('#progress')
-    const progressTime = document.querySelector('#progress-time')
+ipcRenderer.on('notify', (event, idea, started, settings) => {
+    const progress = document.querySelector('.progress-bar')
+    const progressTime = document.querySelector('.progress-container');
+    const widthMax = progressTime.clientWidth;
     const postponeElement = document.querySelector('#postpone')
     const closeElement = document.querySelector('#close')
     document.querySelectorAll('.notification-text').forEach(tt => {
         // const keyboardShortcut = settings.data.endBreakShortcut
         tt.innerHTML = idea[3] || defaultText;
+    });
+
+    const interval = 100;
+    let pause = false;
+    const duration = settings.data.notificationDuration
+    let diff = 0
+    window.setInterval(() => {
+        if (!pause) {
+            if (diff < duration) {
+                // const passedPercent = (Date.now() - started) / duration * 100
+                const size = (duration - diff) / duration * widthMax;
+                console.log(size, widthMax, duration, diff);
+                progress.style.width = size + "px";
+                diff += interval;
+            } else {
+                ipcRenderer.send('skip-break');
+            }
+        }
+
+    }, interval);
+
+    document.querySelector('.notification-page').addEventListener('mouseover', function (event) {
+        pause = true;
+    });
+    document.querySelector('.notification-page').addEventListener('mouseout', function (event) {
+        pause = false;
     });
 
     //     // window.setInterval(() => {
@@ -25,6 +52,7 @@ ipcRenderer.on('notify', (event, idea, settings) => {
     //     //         progressTime.innerHTML = Utils.formatTimeRemaining(Math.trunc(duration - Date.now() + started))
     //     //     }
     //     // }, 100)
+    // notifyMe();
 })
 
 var rangeSlider = document.getElementById("rs-range-line");
@@ -62,3 +90,5 @@ document.querySelector('.dnd').addEventListener('click', function (event) {
 document.querySelector('.close').addEventListener('click', function (event) {
     document.querySelector('.time-slider').classList.add('hide')
 });
+
+

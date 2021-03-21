@@ -7,7 +7,7 @@
     "downloadLatestVersion": "Download latest version",
     "toBreak": "Long Break",
     "toMicrobreak": "Mini Break",
-    "skipToTheNext": "Skip to the next",
+    "skipToTheNext": "Skip to the break",
     "resume": "Resume Breaks",
     "pause": "Pause Breaks",
     "forHour": "1 hour",
@@ -16,7 +16,7 @@
     "untilMorning": "Until morning",
     "indefinitely": "Indefinitely",
     "resetBreaks": "Reset Breaks",
-    "quitStretchly": "Quit Stretchly",
+    "quitStretchly": "Quit getBetter",
     "restoreDefaults": "Restore defaults",
     "warning": "This will restore app defaults and all your settings will be lost.",
     "continue": "Continue",
@@ -31,22 +31,21 @@
     "title": "Time to take a break!"
   },
   "preferences": {
-    "title": "Stretchly Preferences",
+    "title": "getBetter Preferences",
     "nav": {
       "settings": "Settings",
       "schedule": "Schedule",
       "theme": "Theme",
-      "about": "About",
-      "heart": "Love Stretchly"
+      "about": "About"
     },
     "settings": {
-      "openAtLogin": "Start Stretchly automatically when logging in",
-      "showBreaksIn": "Shows breaks in:",
+      "openAtLogin": "Start getBetter automatically when logging in",
+      "showBreaksIn": "Breaks display mode:",
       "window": "Window",
       "fullscreen": "Full screen",
       "showIdeas": "Show exercise tips during breaks",
       "allScreens": "Shows breaks on all monitors",
-      "monitorIdleTime": "Monitor system idle time (breaks are paused if system is idle).",
+      "monitorIdleTime": "Pause breaks when system is idle.",
       "monitorDnd": "Show breaks even in Do Not Disturb mode",
       "language": "Select language:",
       "restoreDefaults": "Restore defaults"
@@ -56,22 +55,22 @@
       "miniBreaksInfo": "Mini Breaks are short breaks taken regularly to give you a chance to stretch and relax.",
       "enableMiniBreaks": "Enable Mini Breaks",
       "breakFor": "Break for:",
-      "every": "Every:",
+      "every": "Break Interval (breaks will be shown in the gap of):",
       "showNotificationBeforeMiniBreak": "Show notification before Mini Break starts",
       "enablePostponeMini": "Enable Postponement for Mini Break",
-      "longBreaks": "Long Breaks:",
-      "longBreaksInfo": "Long Breaks are taken less regularly, but are of greater duration, allowing you to take an extended break from your work.",
+      "longBreaks": "Breaks:",
+      "longBreaksInfo": "Breaks can be of various duration based on the activites, allowing you to take an extended break from your work.",
       "enableLongBreaks": "Enable Long Breaks",
       "showNotificationBeforeLongBreak": "Show notification before Long Break starts",
       "enablePostponeLong": "Enable Postponement for Long Break",
       "strictMode": "Strict Mode:",
-      "strictModeInfo": "Strict Mode prevents you from skipping either Mini Breaks or Long Breaks and is designed to help discipline.",
+      "strictModeInfo": "Strict Mode prevents you from skipping Breaks and is designed to help discipline.",
       "enableStrictMini": "Enable Strict Mode for Mini Breaks",
       "enableStrictLong": "Enable Strict Mode for Long Breaks",
       "cantDisableBoth": "It is not possible to disable both types of breaks"
     },
     "theme": {
-      "appearance": "Appearance:",
+      "appearance": "Theme:",
       "greenClouds": "Green clouds",
       "autumnBeBlessed": "Autumn be blessed",
       "graphiteCrystal": "Graphite crystal",
@@ -88,28 +87,6 @@
       "monochrome": "Monochrome",
       "invertedMonochrome": "Inverted Monochrome",
       "snowWhite": "Snow white"
-    },
-    "about": {
-      "tagline": "The break time reminder app",
-      "version": "Version ",
-      "latestVersion": "Latest version ",
-      "notifyNewVersion": "Automatically notify on app updates",
-      "learnMore": "To learn more about Stretchly features, view a tutorial, download the latest version or contact us for support, ",
-      "ourWebsite": "visit our website",
-      "dot": ".",
-      "developedBy": "Developed by",
-      "janH": "Jan Hovancik",
-      "designedBy": "Icon and UI design by Colin Shanley"
-    },
-    "heart": {
-      "loveStretchly": "Love your Stretchly?",
-      "desc1": "Taking regular breaks when using a computer is scientifically proven to be important for your physical and mental well-being.",
-      "desc2": "Stretchly is free. But you can lend your support by donating and help us continue to improve Stretchly and release other free software.",
-      "becomePatron": "Become a Patron",
-      "alreadyContributor": "I'm already a contributor",
-      "authenticateUsing": "Authenticate using:",
-      "contributorPreferences": "Contributor Preferences",
-      "syncPreferences": "Sync Preferences"
     }
   },
   "contributorPreferences": {
@@ -183,7 +160,7 @@
     "newVersionAvailable": "New version is available!"
   },
   "welcome": {
-    "title": "Welcome to Stretchly",
+    "title": "Welcome to getBetter",
     "breakTimeReminderApp": "The break time reminder app",
     "viewTutorial": "View Tutorial",
     "openPreferences": "Open Preferences",

@@ -76,49 +76,58 @@ input[type="radio"] {
 }
 
 input[type="checkbox"] + label:before {
-  background: var(--checkbox-bg);
-  border: 0 solid rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
-  box-shadow: var(--checkbox-shadow);
-  content: "\00a0";
-  display: inline-block;
-  font: 13px sans-serif;
+  /* background: var(--checkbox-bg); */
   height: 14px;
   line-height: 16px;
-  margin: 0 4px 0 0;
+  box-shadow: var(--checkbox-shadow);
+  margin: 0 8px 0 0;
   padding: 0;
   width: 14px;
+  font-family: "Font Awesome\ 5 Free";
+  content: "\f0c8";
 }
 
 .darwin input[type="checkbox"] + label:before {
-  font: 12px sans-serif;
+  font-family: "Font Awesome 5 Free";
+  display: inline-block;
+  content: "\f0c8";
+  letter-spacing: 10px;
+  font-size: 1.3em;
 }
 
 .win32 input[type="checkbox"] + label:before {
-  font: 11px sans-serif;
+  font-family: "Font Awesome 5 Free";
+  display: inline-block;
+  content: "\f0c8";
+  letter-spacing: 10px;
+  font-size: 1.3em;
 }
 
 input[type="checkbox"]:checked + label:before {
-  background: var(--checkbox-checked-bg);
-  color: #ffffff;
-  content: "\2714";
-  text-align: center;
+  /* background: var(--checkbox-checked-bg); */
+  font-family: "Font Awesome 5 Free";
+  content: "\f14a";
+  letter-spacing: 5px;
 }
 
 .win32 input[type="checkbox"]:checked + label:before {
-  content: "\2713";
+  content: "\f14a";
+}
+
+input[type="checkbox"]:disabled + label {
+  color: rgba(255, 255, 255, 0.99);
+  content: "\f00d";
 }
 
 input[type="radio"] + label:before {
-  background: var(--checkbox-bg);
   border: 0 solid rgba(0, 0, 0, 0.2);
   border-radius: 13px;
   box-shadow: var(--checkbox-shadow);
-  content: "\00a0";
   display: inline-block;
-  font: 13px sans-serif;
+  font-family: "Font Awesome 5 Free";
+  content: "\f111";
   height: 16px;
-  margin: 0 4px 0 0;
+  margin: 0 8px 0 0;
   padding: 0;
   width: 16px;
 }
@@ -126,11 +135,12 @@ input[type="radio"] + label:before {
 input[type="radio"]:checked + label:before {
   background: var(--checkbox-checked-bg);
   color: #ffffff;
-  content: "\25CF";
+  content: "\f192";
   text-align: center;
 }
 
 input[type="radio"]:disabled + label {
+  content: "\f057";
   color: rgba(255, 255, 255, 0.99);
 }
 

@@ -38,7 +38,6 @@ ipcRenderer.on('progress', (event, started, duration, strictMode, postpone, post
     })
 
     window.setInterval(() => {
-        console.log(started, Date.now(), duration);
         if (Date.now() - started < duration) {
             const passedPercent = (Date.now() - started) / duration * 100
             console.log(started, Date.now(), duration, passedPercent);

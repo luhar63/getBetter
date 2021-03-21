@@ -1,13 +1,13 @@
-const { ipcRenderer, shell } = require('electron')
-const remote = require('@electron/remote')
-const HtmlTranslate = require('./utils/htmlTranslate')
-const VersionChecker = require('./utils/versionChecker')
-const { setSameWidths } = require('./utils/sameWidths')
+const { ipcRenderer, shell, remote } = require('electron');
+console.log(remote);
+const HtmlTranslate = require('../js/htmlTranslate');
+// const VersionChecker = require('../js/versionChecker')
+// const { setSameWidths } = require('../js/sameWidths')
 const i18next = remote.require('i18next')
 
 const bounds = remote.getCurrentWindow().getBounds()
 const htmlTranslate = new HtmlTranslate(document)
-const versionChecker = new VersionChecker()
+// const versionChecker = new VersionChecker()
 let eventsAttached = false
 
 window.onload = (e) => {
@@ -91,19 +91,19 @@ window.onload = (e) => {
     setWindowHeight()
   }
 
-  if (remote.getGlobal('shared').isContributor) {
-    showContributorPreferencesButton()
-  }
+  // if (remote.getGlobal('shared').isContributor) {
+  //   showContributorPreferencesButton()
+  // }
 
-  document.querySelector('[name="contributorPreferences"]').onclick = (event) => {
-    event.preventDefault()
-    ipcRenderer.send('open-contributor-preferences')
-  }
+  // document.querySelector('[name="contributorPreferences"]').onclick = (event) => {
+  //   event.preventDefault()
+  //   ipcRenderer.send('open-contributor-preferences')
+  // }
 
-  document.querySelector('[name="syncPreferences"]').onclick = (event) => {
-    event.preventDefault()
-    ipcRenderer.send('open-sync-preferences')
-  }
+  // document.querySelector('[name="syncPreferences"]').onclick = (event) => {
+  //   event.preventDefault()
+  //   ipcRenderer.send('open-sync-preferences')
+  // }
 
   // TODO refactor out?
   const copyToClipBoard = (str) => {
@@ -135,7 +135,7 @@ window.onload = (e) => {
       })
       event.target.closest('a').classList.add('active')
 
-      document.querySelectorAll('body > div').forEach(section => {
+      document.querySelectorAll('.main > div').forEach(section => {
         const toBeDisplayed =
           document.querySelector(`.${event.target.closest('[data-section]').getAttribute('data-section')}`)
         if (section !== toBeDisplayed) {
@@ -144,7 +144,7 @@ window.onload = (e) => {
         toBeDisplayed.classList.remove('hidden')
       })
 
-      setSameWidths()
+      // setSameWidths()
       setWindowHeight()
     }
   })
@@ -180,48 +180,49 @@ window.onload = (e) => {
       }
     })
 
-    document.querySelector('#language').value = settings.language
-    if (!eventsAttached) {
-      document.querySelector('#language').onchange = (event) => {
-        ipcRenderer.send('save-setting', 'language', event.target.value)
-        htmlTranslate.translate()
-        setWindowHeight()
-      }
-    }
+    // document.querySelector('#language').value = settings.language
+    // if (!eventsAttached) {
+    //   document.querySelector('#language').onchange = (event) => {
+    //     ipcRenderer.send('save-setting', 'language', event.target.value)
+    //     htmlTranslate.translate()
+    //     setWindowHeight()
+    //   }
+    // }
 
     document.querySelectorAll('input[type="range"]').forEach(range => {
       const divisor = range.dataset.divisor
       const output = range.closest('div').querySelector('output')
       range.value = settings[range.name] / divisor
+
       const unit = output.dataset.unit
       output.innerHTML = formatUnitAndValue(unit, range.value)
       document.querySelector('#longBreakEvery').closest('div').querySelector('output')
-        .innerHTML = i18next.t('utils.minutes', { count: parseInt(realBreakInterval()) })
+        .innerHTML = i18next.t('utils.minutes', { count: parseInt(realBreakInterval(settings)) })
       if (!eventsAttached) {
         range.onchange = event => {
           output.innerHTML = formatUnitAndValue(unit, range.value)
           document.querySelector('#longBreakEvery').closest('div').querySelector('output')
-            .innerHTML = i18next.t('utils.minutes', { count: parseInt(realBreakInterval()) })
+            .innerHTML = i18next.t('utils.minutes', { count: parseInt(realBreakInterval(settings)) })
           ipcRenderer.send('save-setting', range.name, range.value * divisor)
         }
         range.oninput = event => {
           output.innerHTML = formatUnitAndValue(unit, range.value)
           document.querySelector('#longBreakEvery').closest('div').querySelector('output')
-            .innerHTML = i18next.t('utils.minutes', { count: parseInt(realBreakInterval()) })
+            .innerHTML = i18next.t('utils.minutes', { count: parseInt(realBreakInterval(settings)) })
         }
       }
     })
 
-    document.querySelectorAll('.sounds img').forEach(preview => {
+    document.querySelectorAll('.sounds i').forEach(preview => {
       if (!eventsAttached) {
         preview.onclick = (event) =>
           ipcRenderer.send('play-sound', preview.closest('div').querySelector('input').value)
       }
     })
 
-    if (!settings.checkNewVersion) {
-      document.querySelector('#notifyNewVersion').closest('div').style.display = 'none'
-    }
+    // if (!settings.checkNewVersion) {
+    //   document.querySelector('#notifyNewVersion').closest('div').style.display = 'none'
+    // }
     htmlTranslate.translate()
     setWindowHeight()
   })
@@ -252,38 +253,7 @@ window.onload = (e) => {
     }
   })
 
-  document.querySelector('[name="becomePatron"]').onclick = () => {
-    shell.openExternal('https://hovancik.net/stretchly/sponsor')
-  }
-
-  document.querySelector('[name="alreadyContributor"]').onclick = () => {
-    document.querySelectorAll('.become').forEach((item) => {
-      item.classList.add('hidden')
-    })
-    document.querySelectorAll('.authenticate').forEach((item) => {
-      item.classList.remove('hidden')
-    })
-    setWindowHeight()
-  }
-
-  document.querySelectorAll('.authenticate a').forEach((button) => {
-    button.onclick = (event) => {
-      event.preventDefault()
-      ipcRenderer.send('open-contributor-auth', button.dataset.provider)
-    }
-  })
-
-  document.querySelector('.version').innerHTML = remote.app.getVersion()
-  versionChecker.latest()
-    .then(version => {
-      document.querySelector('.latestVersion').innerHTML = version.replace('v', '')
-    })
-    .catch(exception => {
-      console.error(exception)
-      document.querySelector('.latestVersion').innerHTML = 'N/A'
-    })
-
-  function setWindowHeight () {
+  function setWindowHeight() {
     const classes = document.querySelector('body').classList
     const height = document.querySelector('body').scrollHeight
     if (classes.contains('darwin')) {
@@ -294,14 +264,14 @@ window.onload = (e) => {
     // linux is broken ;/
   }
 
-  function realBreakInterval () {
-    const microbreakInterval = document.querySelector('#miniBreakEvery').value * 1
+  function realBreakInterval(settings) {
+    const microbreakInterval = settings.microbreakInterval / 60000;
     const breakInterval = document.querySelector('#longBreakEvery').value * 1
-    return microbreakInterval * (breakInterval + 1)
+    return microbreakInterval * (breakInterval)
   }
 
   // TODO take out and test
-  function formatUnitAndValue (unit, value) {
+  function formatUnitAndValue(unit, value) {
     if (unit === 'seconds') {
       if (value < 60) {
         return i18next.t('utils.seconds', { count: parseInt(value) })

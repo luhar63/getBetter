@@ -66,7 +66,7 @@ let appIcon = null;
 let notificationWins = null;
 let preferencesWin = null
 let moodsWindow;
-
+let pausedForSuspendOrLock = false;
 
 app.setAppUserModelId('gameOfMinds.getbetter')
 
@@ -75,7 +75,7 @@ const Utils = require('./js/utils');
 const BreaksPlanner = require('./js/breaksPlanner')
 const IdeasLoader = require('./js/ideasLoader')
 const AppIcon = require('./js/appIcon');
-const { get } = require('http');
+const { UntilMorning } = require('./js/untilMorning')
 // const Command = require('./js/commands')
 
 const gotTheLock = app.requestSingleInstanceLock()
@@ -132,7 +132,10 @@ function loadSettings() {
   breakPlanner = new BreaksPlanner(settings)
   breakPlanner.nextBreak() // plan first break
   // breakPlanner.on('startMicrobreakNotification', () => { startMicrobreakNotification() })
-  breakPlanner.on('startBreakNotification', () => { startBreakNotification() })
+  breakPlanner.on('startBreakNotification', () => { startBreakNotification() });
+  breakPlanner.on('finishNotification', () => { finishNotification() });
+  breakPlanner.on('skipBreak', () => { skipbreak() });
+
   // breakPlanner.on('startMicrobreak', () => { startMicrobreak() })
   // breakPlanner.on('finishMicrobreak', (shouldPlaySound) => { finishMicrobreak(shouldPlaySound) })
   // breakPlanner.on('startBreak', () => { startBreak() })
@@ -162,7 +165,7 @@ function loadSettings() {
 function onSuspendOrLock() {
   log.info('System: suspend or lock')
   if (!breakPlanner.isPaused) {
-    pausedForSuspendOrLock = true
+    pausedForSuspendOrLock = true;
     pauseBreaks(1)
     updateTray()
   }
@@ -228,21 +231,29 @@ ipcMain.on('postpone-break', function (event, shouldPlaySound) {
 })
 
 ipcMain.on('skip-break', function (event) {
-  breakPlanner.offNotificationWindow();
   skipbreak();
+
 });
 
 ipcMain.on('start-break', function (event) {
-  breakPlanner.offNotificationWindow();
-  notificationWins = closeWindows(notificationWins);
+
+  finishNotification();
   startBreak();
 });
 
 ipcMain.on('dnd-time-break', function (event, time) {
   breakPlanner.offNotificationWindow();
   breakPlanner.pause(time * 60 * 1000);
-  notificationWins = closeWindows(notificationWins)
+  finishNotification();
 });
+
+function blurWindows(windowArray) {
+  if (!windowArray)
+    return
+  for (let i = windowArray.length - 1; i >= 0; i--) {
+    windowArray[i].blur();
+  }
+}
 
 function closeWindows(windowArray) {
   if (!windowArray)
@@ -274,12 +285,13 @@ function checkMoodStatus(settings) {
       moodsWindow = createMoodsWindow();
     }
   }
-
 }
 
 ipcMain.on('mood', function (event, mood) {
   // console.log("MOOD", mood);
   settings.set('current-mood', mood);
+  const interval = settings.get('moodQuestionInterval');
+  settings.set('next-mood-time', Date.now() + interval);
   loadIdeas(mood);
   moodsWindow.hide();
   moodsWindow.close();
@@ -287,7 +299,7 @@ ipcMain.on('mood', function (event, mood) {
 });
 
 
-function loadIdeas(mood) {
+function loadIdeas(mood = 'happy') {
   let breakIdeasData;
   let microbreakIdeasData;
   if (settings.get('useIdeasFromSettings')) {
@@ -324,16 +336,6 @@ function showNotificationWindow() {
   // const idea = nextIdea ? (nextIdea.map((val, index) => val || defaultNextIdea[index])) : defaultNextIdea
   nextIdea = defaultNextIdea;
 
-  const breakDuration = settings.get('breakDuration');
-  const strictMode = settings.get('breakStrictMode');
-  const postponesLimit = settings.get('breakPostponesLimit');
-  const postponableDurationPercent = settings.get('breakPostponableDurationPercent');
-  const postponable = settings.get('breakPostpone') &&
-    breakPlanner.postponesNumber < postponesLimit && postponesLimit > 0;
-  if (settings.get('breakStartSoundPlaying') && !settings.get('silentNotifications')) {
-    processWin.webContents.send('playSound', settings.get('audio'), settings.get('volume'))
-  }
-
   for (let localDisplayId = 0; localDisplayId < numberOfDisplays(); localDisplayId++) {
     const windowOptions = {
       width: Number.parseInt(Utils.displaysWidth(localDisplayId) * 0.35),
@@ -355,15 +357,10 @@ function showNotificationWindow() {
       }
     };
 
-    if (settings.get('fullscreen') && process.platform !== 'darwin') {
-      windowOptions.width = Utils.displaysWidth(localDisplayId)
-      windowOptions.height = Utils.displaysHeight(localDisplayId)
-      windowOptions.x = Utils.displaysX(localDisplayId, 0, true, true)
-      windowOptions.y = Utils.displaysY(localDisplayId, 0, true, true)
-    } else if (!(settings.get('fullscreen') && process.platform === 'win32')) {
-      windowOptions.x = Utils.displaysX(localDisplayId, windowOptions.width, false, true)
-      windowOptions.y = Utils.displaysY(localDisplayId, windowOptions.height, false, true)
-    }
+
+
+    windowOptions.x = Utils.displaysX(localDisplayId, windowOptions.width, false, true)
+    windowOptions.y = Utils.displaysY(localDisplayId, windowOptions.height, false, true)
 
 
 
@@ -381,11 +378,11 @@ function showNotificationWindow() {
       // notificationWinLocal.setSize(windowOptions.width, windowOptions.height)
       notificationWinLocal.showInactive()
       log.info(`getBetter: showing window ${localDisplayId + 1} of ${numberOfDisplays()}`)
-      if (process.platform === 'darwin') {
-        notificationWinLocal.setKiosk(settings.get('fullscreen'))
-      }
+      // if (process.platform === 'darwin') {
+      //   notificationWinLocal.setKiosk(settings.get('fullscreen'))
+      // }
       // notificationWinLocal.webContents.send('breakIdea', idea)
-      notificationWinLocal.webContents.send('notify', nextIdea, settings)
+      notificationWinLocal.webContents.send('notify', nextIdea, Date.now(), settings)
       // if (!settings.get('fullscreen') && process.platform !== 'darwin') {
       //   setTimeout(() => {
       //     notificationWinLocal.center()
@@ -396,7 +393,7 @@ function showNotificationWindow() {
     // notificationWinLocal.webContents.openDevTools()
     notificationWinLocal.loadURL(modalPath);
     notificationWinLocal.setVisibleOnAllWorkspaces(true);
-    notificationWinLocal.setAlwaysOnTop(true, 'screen-saver')
+    notificationWinLocal.setAlwaysOnTop(true, 'floating')
     if (notificationWinLocal) {
       notificationWinLocal.on('closed', () => {
         notificationWinLocal = null
@@ -416,15 +413,20 @@ function showNotificationWindow() {
 }
 
 function animateIn(window, maxX, maxY, maxW, maxH) {
-
   let x = maxX + maxW;
   let y = maxY - 75;
   let flag = true;
   let interval = setInterval(() => {
     if (x <= (maxX + 10)) {
       clearInterval(interval);
+      blurWindows(notificationWins);
+      if (process.platform === 'darwin') {
+        // get focus on the last app
+        Menu.sendActionToFirstResponder('hide:')
+      }
     }
     x -= 10;
+    // console.log(x, y);
     window.setPosition(x, y);
     if (flag) {
       window.show();
@@ -564,16 +566,21 @@ function startBreak() {
 }
 
 function skipbreak() {
-  notificationWins = closeWindows(notificationWins);
-  if (process.platform === 'darwin') {
-    // get focus on the last app
-    Menu.sendActionToFirstResponder('hide:')
-  }
+  finishNotification();
   if (process.platform === 'darwin') {
     app.dock.hide()
   }
   breakPlanner.nextBreak();
   updateTray();
+}
+
+function finishNotification() {
+  breakPlanner.offNotificationWindow();
+  notificationWins = closeWindows(notificationWins);
+  if (process.platform === 'darwin') {
+    // get focus on the last app
+    Menu.sendActionToFirstResponder('hide:')
+  }
 }
 
 function finishBreak(shouldPlaySound = true) {
@@ -605,7 +612,7 @@ function resumeBreaks(notify = true) {
     //   showNotification("Resuming breaks")
     // }
   }
-  updateTray()
+  updateTray();
 }
 
 function calculateBackgroundColor() {
@@ -632,6 +639,14 @@ function skipToBreak() {
   }
   breakPlanner.skipToBreak()
   log.info('getBetter: skipping to Long Break')
+  updateTray()
+}
+function pauseBreaks(milliseconds) {
+  if (breakWins) {
+    finishBreak(false)
+  }
+  breakPlanner.pause(milliseconds)
+  log.info(`getBetter: pausing breaks for ${milliseconds}`)
   updateTray()
 }
 
@@ -735,23 +750,10 @@ function getTrayMenu() {
   }
 
   if (!(breakPlanner.isPaused || breakPlanner.dndManager.isOnDnd)) {
-    let submenu = []
-    if (settings.get('microbreak')) {
-      submenu = submenu.concat([{
-        label: i18next.t('main.toMicrobreak'),
-        click: skipToMicrobreak
-      }])
-    }
-    if (settings.get('break')) {
-      submenu = submenu.concat([{
-        label: i18next.t('main.toBreak'),
-        click: skipToBreak
-      }])
-    }
     if (settings.get('break') || settings.get('microbreak')) {
       trayMenu.push({
         label: i18next.t('main.skipToTheNext'),
-        submenu: submenu
+        click: skipToBreak
       })
     }
   }
@@ -860,22 +862,29 @@ function createPreferencesWindow() {
   const modalPath = path.join('file://', __dirname, '/screens/preferences.html')
   const maxHeight = electron.screen
     .getDisplayNearestPoint(electron.screen.getCursorScreenPoint())
-    .workAreaSize.height * 0.9
+    .workAreaSize.height * 0.75
   preferencesWin = new BrowserWindow({
-    autoHideMenuBar: true,
     icon: windowIconPath(),
     width: 600,
-    height: 530,
+    height: 500,
     maxHeight: Math.round(maxHeight),
+    icon: windowIconPath(),
+    show: false,
+    transparent: settings.get('transparentMode'),
     x: Utils.displaysX(-1, 600),
-    y: Utils.displaysY(-1, 530),
-    backgroundColor: '#EDEDED',
+    y: Utils.displaysY(-1, 500),
+    backgroundColor: nativeTheme.shouldUseDarkColors ? "#2d2d2d" : "#ededed",
     webPreferences: {
-      preload: path.join(__dirname, './screens/preferences.js'),
+      nodeIntegration: true,
       enableRemoteModule: true
     }
   })
-  preferencesWin.loadURL(modalPath)
+  preferencesWin.hide();
+  preferencesWin.loadURL(modalPath);
+  preferencesWin.once('ready-to-show', () => {
+    preferencesWin.show();
+  });
+  // preferencesWin.webContents.openDevTools();
   preferencesWin.on('closed', () => {
     preferencesWin = null
   })
