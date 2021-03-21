@@ -59,7 +59,7 @@
       "showNotificationBeforeMiniBreak": "Show notification before Mini Break starts",
       "enablePostponeMini": "Enable Postponement for Mini Break",
       "longBreaks": "Breaks:",
-      "longBreaksInfo": "Breaks can be of various duration based on the activites, allowing you to take an extended break from your work.",
+      "longBreaksInfo": "Breaks can be of various duration based on the activites, allowing you to take a break from your work.",
       "enableLongBreaks": "Enable Long Breaks",
       "showNotificationBeforeLongBreak": "Show notification before Long Break starts",
       "enablePostponeLong": "Enable Postponement for Long Break",
@@ -67,7 +67,10 @@
       "strictModeInfo": "Strict Mode prevents you from skipping Breaks and is designed to help discipline.",
       "enableStrictMini": "Enable Strict Mode for Mini Breaks",
       "enableStrictLong": "Enable Strict Mode for Breaks",
-      "cantDisableBoth": "It is not possible to disable both types of breaks"
+      "cantDisableBoth": "It is not possible to disable both types of breaks",
+      "moods": "Moods:",
+      "moodsInfo": "Based on moods, activities will be shown",
+      "moodsEvery": "Moods question will be popped every:"
     },
     "theme": {
       "appearance": "Theme:",

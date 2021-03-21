@@ -239,6 +239,14 @@
       .schedule > div {
         margin-bottom: 1rem;
       }
+      .schedule .separator {
+        font-weight: bold;
+        padding-top: 10px;
+        border-top: 1px solid var(--main-color);
+      }
+      .schedule .separator:nth-child(1) {
+        border-top: none;
+      }
 
       .mar-t-20 {
         margin-top: 20px !important;
@@ -254,6 +262,9 @@
 
       .sounds {
         margin-top: 1rem;
+      }
+      .italics {
+        font-style: italic;
       }
     </style>
   </head>
@@ -337,9 +348,6 @@
               for="monitorDnd"
             ></label>
           </div>
-          <div>
-            <hr />
-          </div>
           <!-- <div>
             <label
               data-i18next="preferences.settings.language"
@@ -394,10 +402,10 @@
           </div>
         </div>
         <div class="schedule hidden">
-          <div>
+          <div class="separator">
             <span data-i18next="preferences.schedule.longBreaks"> </span>
           </div>
-          <div>
+          <div class="italics">
             <p data-i18next="preferences.schedule.longBreaksInfo"></p>
           </div>
           <!-- <div>
@@ -459,10 +467,10 @@
           <div>
             <hr />
           </div>
-          <div>
+          <div class="separator">
             <span data-i18next="preferences.schedule.strictMode"> </span>
           </div>
-          <div>
+          <div class="italics">
             <p data-i18next="preferences.schedule.strictModeInfo"></p>
           </div>
           <div>
@@ -475,6 +483,31 @@
               data-i18next="preferences.schedule.enableStrictLong"
               for="enableStrictLong"
             ></label>
+          </div>
+          <div class="separator">
+            <span data-i18next="preferences.schedule.moods"> </span>
+          </div>
+          <div class="italics">
+            <p data-i18next="preferences.schedule.moodsInfo"></p>
+          </div>
+          <div>
+            <label
+              data-i18next="preferences.schedule.moodsEvery"
+              data-same-width-label
+              for="moodQuestionEvery"
+            ></label>
+            <br />
+            <input
+              type="range"
+              min="1"
+              step="1"
+              max="24"
+              name="moodQuestionInterval"
+              data-divisor="3600000"
+              id="moodQuestionEvery"
+              class="mar-t-20"
+            />
+            <output class="output" data-unit="hours"></output>
           </div>
         </div>
         <div class="theme hidden">
