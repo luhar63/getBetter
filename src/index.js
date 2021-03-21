@@ -896,6 +896,10 @@ function createPreferencesWindow() {
   });
   // preferencesWin.webContents.openDevTools();
   preferencesWin.on('closed', () => {
+    if (process.platform === 'darwin') {
+      // get focus on the last app
+      Menu.sendActionToFirstResponder('hide:')
+    }
     preferencesWin = null
   })
 }
@@ -933,6 +937,11 @@ ipcMain.on('save-setting', function (event, key, value) {
     settings.set(key, value)
   }
 
+  if (key === 'breakInterval') {
+    console.log("resetting breaks");
+    breakPlanner.reset();
+  }
+
   updateTray()
 })
 
@@ -965,11 +974,15 @@ function createMoodsWindow() {
   moodsWindow.loadURL(modalPath)
   if (moodsWindow) {
     moodsWindow.on('closed', () => {
+      if (process.platform === 'darwin') {
+        // get focus on the last app
+        Menu.sendActionToFirstResponder('hide:')
+      }
       moodsWindow = null
     })
   }
-  if (env === 'development') {
-    moodsWindow.webContents.openDevTools();
-  }
+  // if (env === 'development') {
+  //   moodsWindow.webContents.openDevTools();
+  // }
   return moodsWindow;
 }

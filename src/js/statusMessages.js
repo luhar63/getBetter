@@ -62,8 +62,10 @@ class StatusMessages {
         }
 
         if (this.reference === 'startBreakNotification') {
+            // console.log("startBreakNotification", this.timeLeft, this.timeLeft + breakNotificationInterval, Utils.formatTimeIn(this.timeLeft + breakNotificationInterval));
             message += i18next.t('statusMessages.nextLongBreak') + ' ' +
                 Utils.formatTimeIn(this.timeLeft + breakNotificationInterval)
+            // console.log(message);
             return message
         }
 

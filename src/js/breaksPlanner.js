@@ -66,7 +66,7 @@ class BreaksPlanner extends EventEmitter {
         if (this.onNotificationScreen) {
             return;
         }
-        console.log("inside, nextbreak");
+        // console.log("inside, nextbreak");
         this.postponesNumber = 0
         if (this.scheduler) this.scheduler.cancel()
         const shouldBreak = this.settings.get('break')
@@ -78,10 +78,10 @@ class BreaksPlanner extends EventEmitter {
         const microbreakNotificationInterval = this.settings.get('microbreakNotificationInterval')
         if (shouldBreak) {
             if (breakNotification) {
-                console.log("call", "startBreakNotification");
+                // console.log("call", "startBreakNotification");
                 this.scheduler = new Scheduler(() => this.emit('startBreakNotification'), interval * (this.settings.get('breakInterval')) - breakNotificationInterval, 'startBreakNotification')
             } else {
-                console.log("call", "startBreakNotification");
+                // console.log("call", "startBreakNotification");
                 this.scheduler = new Scheduler(() => this.emit('startBreakNotification'), interval * (this.settings.get('breakInterval')), 'startBreakNotification')
             }
         }
@@ -115,8 +115,8 @@ class BreaksPlanner extends EventEmitter {
         //         }
         //     }
         // }
-        console.log(this.scheduler);
-        this.scheduler.plan()
+        // console.log(this.scheduler);
+        this.scheduler.plan();
     }
 
     nextBreakAfterNotification() {

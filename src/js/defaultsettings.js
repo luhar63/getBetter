@@ -9,7 +9,7 @@ module.exports = {
     microbreakNotification: true,
     // breakNotificationInterval: 30000,
     breakNotificationInterval: 0,
-    microbreakNotificationInterval: 10000,
+    microbreakNotificationInterval: 0,
     microbreak: false,
     break: true,
     microbreakStrictMode: false,

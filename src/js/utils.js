@@ -99,7 +99,7 @@ const formatTimeIn = function (milliseconds, i18next = require('i18next')) {
 
     if (seconds >= 60 && minutes < 60) {
         if (seconds === 60) {
-            return i18next.t('utils.inAboutMinutes', { minutes: 2 })
+            return i18next.t('utils.inAboutMinutes', { minutes: 1 })
         }
         return i18next.t('utils.inAboutMinutes', { minutes: minutes })
     }

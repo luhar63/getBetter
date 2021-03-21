@@ -2,10 +2,10 @@
   "main": {
     "toolTipHeader": "getBetter - Its break time!",
     "microbreakIn": "Mini Break in $t(utils.seconds, {'count': {{seconds}} })",
-    "breakIn": "Long Break in $t(utils.seconds, {'count': {{seconds}} })",
+    "breakIn": "Break in $t(utils.seconds, {'count': {{seconds}} })",
     "resumingBreaks": "Resuming breaks",
     "downloadLatestVersion": "Download latest version",
-    "toBreak": "Long Break",
+    "toBreak": "Break",
     "toMicrobreak": "Mini Break",
     "skipToTheNext": "Skip to the break",
     "resume": "Resume Breaks",
@@ -66,7 +66,7 @@
       "strictMode": "Strict Mode:",
       "strictModeInfo": "Strict Mode prevents you from skipping Breaks and is designed to help discipline.",
       "enableStrictMini": "Enable Strict Mode for Mini Breaks",
-      "enableStrictLong": "Enable Strict Mode for Long Breaks",
+      "enableStrictLong": "Enable Strict Mode for Breaks",
       "cantDisableBoth": "It is not possible to disable both types of breaks"
     },
     "theme": {
@@ -170,8 +170,8 @@
     "paused": "Paused",
     "indefinitely": "Indefinitely",
     "dndMode": "Do Not Disturb is on",
-    "nextLongBreak": "Next Long Break",
-    "nextMiniBreak": "Next Mini Break",
+    "nextLongBreak": "Next Break",
+    "nextMiniBreak": "Next Break",
     "afterMiniBreak": "after {{count}} Mini Break",
     "afterMiniBreak_plural": "after {{count}} Mini Breaks",
     "resuming": "Resuming"
