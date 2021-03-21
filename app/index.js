@@ -260,7 +260,6 @@ function closeWindows(windowArray) {
   if (!windowArray)
     return null
   for (let i = windowArray.length - 1; i >= 0; i--) {
-    windowArray[i].blur();
     windowArray[i].hide();
     windowArray[i].close();
   }
@@ -358,7 +357,7 @@ function showNotificationWindow() {
       transparent: settings.get('transparentMode'),
       backgroundColor: nativeTheme.shouldUseDarkColors ? "#2d2d2d" : "#ededed",
       skipTaskbar: true,
-      focusable: true,
+      focusable: false,
       title: 'getBetter',
       alwaysOnTop: true,
       webPreferences: {
@@ -577,20 +576,19 @@ function startBreak() {
 
 function skipbreak() {
   finishNotification();
-  if (process.platform === 'darwin') {
-    app.dock.hide()
-  }
   breakPlanner.nextBreak();
   updateTray();
 }
 
 function finishNotification() {
   breakPlanner.offNotificationWindow();
-  notificationWins = closeWindows(notificationWins);
   if (process.platform === 'darwin') {
     // get focus on the last app
     Menu.sendActionToFirstResponder('hide:')
   }
+  notificationWins = closeWindows(notificationWins);
+
+
 }
 
 function finishBreak(shouldPlaySound = true) {

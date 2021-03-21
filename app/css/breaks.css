@@ -56,12 +56,6 @@
 .breaks > :nth-child(2) > a:hover {
   color: #ffff00;
 }
-.breaks > :nth-child(2) > #postpone:hover {
-  color: #dc3545;
-}
-.breaks > :nth-child(2) > #close:hover {
-  color: #f18916;
-}
 
 .breaks > :nth-child(2) > a img {
   /* https://codepen.io/sosuke/pen/Pjoqqp */
