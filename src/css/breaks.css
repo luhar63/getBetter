@@ -1,3 +1,4 @@
+@import url(./index.css);
 .breaks {
   align-items: center;
   color: #ffffff;
@@ -5,6 +6,10 @@
   font-weight: 300;
   grid-template: 85vh 10vh / 100px auto 100px;
   justify-items: center;
+}
+
+.break_page {
+  background: inherit;
 }
 
 .breaks > * {
@@ -50,6 +55,12 @@
 
 .breaks > :nth-child(2) > a:hover {
   color: #ffff00;
+}
+.breaks > :nth-child(2) > #postpone:hover {
+  color: #dc3545;
+}
+.breaks > :nth-child(2) > #close:hover {
+  color: #f18916;
 }
 
 .breaks > :nth-child(2) > a img {
@@ -97,4 +108,8 @@
 
 .ffffff .breaks > :nth-child(2) > a:hover img {
   filter: hue-rotate(359deg) brightness(101%) contrast(103%);
+}
+
+.tooltip i {
+  margin-right: 10px;
 }
