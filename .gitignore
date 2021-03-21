@@ -93,3 +93,7 @@ dist
 package-lock.json
 
 .idea/
+
+release-builds/
+
+package-lock.json
