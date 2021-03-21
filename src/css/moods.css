@@ -43,7 +43,7 @@ body.moods-page {
 .title-question {
   text-align: center;
   font-size: 1.8rem;
-  color: #eb6093;
+  color: #a73a9c;
   font-weight: normal;
   align-items: center;
 }
@@ -54,8 +54,10 @@ body.moods-page {
   color: #252525;
 }
 .mood:hover {
-  background: #cbd6e03d;
   cursor: pointer;
+}
+.mood:hover .text {
+  color: #a73a9c;
 }
 
 .mood.selected {
