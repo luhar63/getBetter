@@ -12,7 +12,7 @@
     "pause": "Pause Breaks",
     "forHour": "1 hour",
     "for2Hours": "2 hours",
-    "for5Hours": "5 hours",
+    "for6Hours": "6 hours",
     "untilMorning": "Until morning",
     "indefinitely": "Indefinitely",
     "resetBreaks": "Reset Breaks",
@@ -69,8 +69,8 @@
       "enableStrictLong": "Enable Strict Mode for Breaks",
       "cantDisableBoth": "It is not possible to disable both types of breaks",
       "moods": "Moods:",
-      "moodsInfo": "Based on moods, activities will be shown",
-      "moodsEvery": "Moods question will be popped every:"
+      "moodsInfo": "Activities will be suggested based on your mood.",
+      "moodsEvery": "How frequently should we check in with you:"
     },
     "theme": {
       "appearance": "Theme:",

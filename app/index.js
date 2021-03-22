@@ -282,7 +282,7 @@ function checkMoodStatus(settings) {
     this.setTimeout(() => {
       checkMoodStatus(settings);
       // }, 300000);
-    }, 30000);
+    }, 5000);
     return
   }
   if (!settings.get('next-mood-time')) {
@@ -324,6 +324,9 @@ function loadIdeas(mood = 'happy') {
 }
 
 function startBreakNotification() {
+  if (settings.get('isFirstRun')) {
+    skipbreak();
+  }
   const notificationText = i18next.t('main.breakIn', { seconds: settings.get('breakNotificationInterval') / 1000 });
   // showNotification();
   showNotificationWindow();
@@ -790,9 +793,9 @@ function getTrayMenu() {
             pauseBreaks(3600 * 2 * 1000)
           }
         }, {
-          label: i18next.t('main.for5Hours'),
+          label: i18next.t('main.for6Hours'),
           click: function () {
-            pauseBreaks(3600 * 5 * 1000)
+            pauseBreaks(3600 * 6 * 1000)
           }
         }, {
           label: i18next.t('main.untilMorning'),

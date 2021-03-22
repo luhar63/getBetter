@@ -12,6 +12,7 @@ a.close {
 a.close i {
   cursor: pointer;
   font-size: 24px;
+  color: #292929;
 }
 .moods-page .welcome-logo {
   display: flex;
