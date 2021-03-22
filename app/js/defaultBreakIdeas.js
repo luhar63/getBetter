@@ -285,7 +285,7 @@ module.exports =
   ],
   stressed: [
     {
-      data: ['Focus on breathing and calm the mind.', 'Mindful breathing involves becoming aware of your breath' +
+      data: ['Focus on breathing and calm the mind', 'Mindful breathing involves becoming aware of your breath' +
         ' and focusing on it. The act of focusing on the breath usually slows down breathing patterns,' +
         ' making you feel more relaxed. As you focus on how air moves in and out through your' +
         'lungs, mouth, and nose, it becomes a form of calming meditation.', 5, 'Did you know deep breathing is one of the best' +
@@ -293,11 +293,11 @@ module.exports =
       enabled: true
     },
     {
-      data: ['Go for a short walk.', 'Taking a walk allows you to enjoy a change of scenery and gets you in a ' +
-        'different frame of mind. Research shows that a brief walk, especially one outdoors lowers levels of' +
-        ' the stress hormone cortisol. Cortisol not only increases with stress, it also mobilizes fat and deposits' +
+      data: ['Short walks', 'Taking a walk allows you to enjoy a change of scenery and gets you in a ' +
+        'different frame of mind. Research shows that a brief walk, especially one outdoors, lowers levels of' +
+        ' the stress hormone cortisol. Cortisol not only increases with stress, but it also mobilizes fat and deposits' +
         ' it on your waist and tummy.', 5, 'Just 30 minutes of walking every day can increase cardiovascular fitness,' + +
-        ' strengthen bones, reduce excess body fat, and boost muscle power and endurance.'],
+        ' and reduces excess body fat. Would you like to take a short walk?'],
       enabled: true
     },
     {
@@ -309,17 +309,17 @@ module.exports =
       enabled: true
     },
     {
-      data: ['Try knitting.', 'There is evidence that the repetitive action of clicking your needles can be' +
+      data: ['Try knitting', 'There is evidence that the repetitive action of clicking your needles can be' +
         'meditative and calming. There has also been research that looked at people with anxiety and found that knitting' +
-        ' made most of them less preoccupied and anxious.', 10, 'Research shows that when you' + 'Knitting acts as a natural ' +
+        ' made most of them less preoccupied and anxious.', 10, 'Research shows that ' + 'Knitting acts as a natural ' +
         'antidepressant and can help ease anxiety, depression, and chronic pain and protect the brain from aging. How about some knitting?'],
       enabled: true
     },
     {
-      data: ['Try doing guided imagery.', 'You can simply close your eyes and picture yourself being in your happy place and walking ' +
+      data: ['Try doing guided imagery', 'You can simply close your eyes and picture yourself being in your happy place and walking ' +
         'yourself through a peaceful scene, which helps move your attention away from worry and stress to help you find your' +
         ' own inner strength and creativity and helping you change how you are feeling by changing your focus.', 10,
-        'Elite athletes use guided imagery to imaging themselves performing at their best, and its proven to improve performance. Do you want to be in your happy place?'],
+        'Elite athletes use guided imagery to imagine themselves performing at their best, and its proven to improve performance. Do you want to try guided imagery?'],
       enabled: true
     },
     {
@@ -330,39 +330,32 @@ module.exports =
       enabled: true
     },
     {
-      data: ['Practice progressive muscle relaxation.', 'It involves tensing and then relaxing your muscles, one by one starting' +
+      data: ['Practice progressive muscle relaxation', 'It involves tensing and then relaxing your muscles, one by one starting' +
         ' from your forehead to your toes. This helps you release physical tension, which may ease stress and anxiety. ' +
         'It may also reduce migraine attacks, systolic blood pressure, and TMJ symptoms.', 10,
-        'Research has shown that progressive muscle relaxation offers a range of benefits, including pain relief and better sleep. Want to feel relaxed?'],
+        'Research shows that progressive muscle relaxation offers a range of benefits, including pain relief and better sleep. Want to feel relaxed?'],
       enabled: true
     },
     {
-      data: ['Have some positive self-talk.', 'Positive self-talk can help you develop a healthier outlook. Research suggests ' +
-        'people with positive self-talk may have mental skills that allow them to solve problems, think differently, and be' +
+      data: ['Have some positive self-talk', 'Positive self-talk can help you develop a healthier outlook. Research suggests ' +
+        'people with positive self-talk develop skills that allow them to solve problems, think differently, and be' +
         ' more efficient at coping with hardships or challenges. This can reduce the harmful effects of stress and anxiety.', 10,
-        'Research suggests people with positive self-talk may have mental skills that help solve problems, and cope with hardships more efficiently. How about giving yourself a boost?'],
+        'Research suggests people with positive self-talk are able to solve problems and cope with hardships more efficiently. How about giving yourself a boost?'],
       enabled: true
     },
     {
-      data: ['Plan your day.', 'Making a to-do list and getting through each activity one by one can create ' +
+      data: ['Plan your day', 'Making a to-do list and getting through each activity one by one can create ' +
         'balance in your life: it allows you to clearly separate the time you spend working and the time you have for ' +
         'everything else. It can make your life a lot less stressful, it allows you to evaluate yourself and be prepared.', 10,
-        'Planning does provide benefits that facilitate progress even when faced with uncertainty and a constantly changing environment. How about some planning?'],
+        'Do you know what all successful people have in common? They plan ahead of time as it helps them deal with uncertainty and constant changes. Do you want to do some planning?'],
       enabled: true
     },
     {
-      data: ['Step away from the digital world.', 'Watching the news, being constantly connected to your digital devices may add' +
-        ' more stress to your life. Powering-down helps remove unhealthy feelings of jealousy, envy, and loneliness ' +
-        'and combats the fear of missing out.', 20, 'Researchers discovered that one in three people ' +
-        'felt worse after visiting Facebook and more dissatisfied with their lives. Why not take a break?'],
-      enabled: true
-    },
-    {
-      data: ['Give yourself a massage.', 'There are sensory receptors in the skin that send messages to our brain, ' +
+      data: ['Give yourself a massage', 'There are sensory receptors in the skin that send messages to our brain, ' +
         'signaling that it is safe to relax. It also makes you more aware of where in your body you are feeling tense, ' +
         'so you can consciously relax those areas. Some good spots are the muscles at the front of your neck, your ' +
         'neck, your shoulders, the hinge of your jaw, and pressure points in the palm of your hand.', 10,
-        'Massage (including myotherapy) may be used to treat or prevent a range of physical and psychological conditions. Do you enjoy a good massage?'],
+        'Did you know that self massage rejuvinates your body and mind? Would you like to detoxify your body\'s largest organ?'],
       enabled: true
     }
   ],
