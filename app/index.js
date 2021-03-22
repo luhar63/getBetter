@@ -532,7 +532,7 @@ function startBreak() {
 
     let breakWinLocal = new BrowserWindow(windowOptions)
     // console.log(breakWinLocal);
-    // breakWinLocal.webContents.openDevTools();
+    breakWinLocal.webContents.openDevTools();
     // seems to help with multiple-displays problems
     breakWinLocal.setSize(windowOptions.width, windowOptions.height)
     // breakWinLocal.webContents.openDevTools()
