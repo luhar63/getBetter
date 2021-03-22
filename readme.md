@@ -2,7 +2,7 @@
 
     .
     ├── build                   # Compiled files (alternatively `dist`)
-    ├── src
+    ├── app
     │   ├── css
     │   ├── images
     │   ├── screens             # contains screens for getBetter app (welcome screen, mood interface, etc)
