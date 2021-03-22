@@ -32,6 +32,9 @@ function clickHandler(event) {
     ipcRenderer.send('mood', li.dataset.mood);
 
 }
+document.querySelector('.close').addEventListener('click', function (event) {
+    ipcRenderer.send('mood', "common");
+});
 // elm.addEventListener('click', function (event) {
 
 //     // Don't follow the link

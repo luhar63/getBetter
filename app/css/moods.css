@@ -1,6 +1,17 @@
 @import url(./index.css);
 body.moods-page {
   background: #e5e5e5;
+  position: relative;
+}
+a.close {
+  position: absolute;
+  right: 12px;
+  top: 19px;
+  z-index: 10;
+}
+a.close i {
+  cursor: pointer;
+  font-size: 24px;
 }
 .moods-page .welcome-logo {
   display: flex;

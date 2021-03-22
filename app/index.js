@@ -11,19 +11,20 @@ const { createWelcomeWindow } = require('./js/windowManger')
 
 // const { initPowerMonitoring } = require('./js/powermanagement');
 
-process.on('uncaughtException', (err, _) => {
-  log.error(err)
-  const dialogOpts = {
-    type: 'error',
-    title: 'getBetter',
-    message: 'An error occured while running getBetter and it will now quit. To report the issue, click Report.',
-    buttons: ['close']
-  }
-  dialog.showMessageBox(dialogOpts).then((returnValue) => {
-
-    app.quit();
+function bindErrorHandling() {
+  process.on('uncaughtException', (err, _) => {
+    log.error(err);
+    const dialogOpts = {
+      type: 'error',
+      title: 'getBetter',
+      message: 'An error occured while running getBetter and it will now quit. To report the issue, click Report.',
+      buttons: ['close']
+    }
+    dialog.showMessageBox(dialogOpts).then((returnValue) => {
+      app.quit();
+    })
   })
-})
+}
 
 function startI18next() {
   i18next
@@ -102,7 +103,7 @@ app.on('ready', startProcessWin);
 app.on('ready', loadSettings);
 app.on('ready', initPowerMonitoring);
 app.on('ready', createTrayIcon);
-
+app.on('ready', bindErrorHandling);
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -357,7 +358,7 @@ function showNotificationWindow() {
       transparent: settings.get('transparentMode'),
       backgroundColor: nativeTheme.shouldUseDarkColors ? "#2d2d2d" : "#ededed",
       skipTaskbar: true,
-      focusable: false,
+      focusable: true,
       title: 'getBetter',
       alwaysOnTop: true,
       webPreferences: {
@@ -984,3 +985,22 @@ function createMoodsWindow() {
   // }
   return moodsWindow;
 }
+
+ipcMain.on('restore-defaults', (event) => {
+  const dialogOpts = {
+    type: 'question',
+    icon: path.join(__dirname, './images/app-icons/', 'icon.png'),
+    title: i18next.t('main.restoreDefaults'),
+    message: i18next.t('main.warning'),
+    buttons: [i18next.t('main.continue'), i18next.t('main.cancel')]
+  }
+  dialog.showMessageBox(dialogOpts).then((returnValue) => {
+    if (returnValue.response === 0) {
+      settings.restoreDefaults()
+      i18next.changeLanguage(settings.get('language'))
+      updateTray()
+      event.sender.send('renderSettings', settingsToSend())
+      event.sender.reload();
+    }
+  })
+})
