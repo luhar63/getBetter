@@ -282,7 +282,7 @@ function checkMoodStatus(settings) {
     this.setTimeout(() => {
       checkMoodStatus(settings);
       // }, 300000);
-    }, 30000);
+    }, 5000);
     return
   }
   if (!settings.get('next-mood-time')) {
@@ -324,6 +324,9 @@ function loadIdeas(mood = 'happy') {
 }
 
 function startBreakNotification() {
+  if (settings.get('isFirstRun')) {
+    skipbreak();
+  }
   const notificationText = i18next.t('main.breakIn', { seconds: settings.get('breakNotificationInterval') / 1000 });
   // showNotification();
   showNotificationWindow();
@@ -532,7 +535,7 @@ function startBreak() {
 
     let breakWinLocal = new BrowserWindow(windowOptions)
     // console.log(breakWinLocal);
-    breakWinLocal.webContents.openDevTools();
+    // breakWinLocal.webContents.openDevTools();
     // seems to help with multiple-displays problems
     breakWinLocal.setSize(windowOptions.width, windowOptions.height)
     // breakWinLocal.webContents.openDevTools()
