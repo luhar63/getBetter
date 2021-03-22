@@ -793,9 +793,9 @@ function getTrayMenu() {
             pauseBreaks(3600 * 2 * 1000)
           }
         }, {
-          label: i18next.t('main.for5Hours'),
+          label: i18next.t('main.for6Hours'),
           click: function () {
-            pauseBreaks(3600 * 5 * 1000)
+            pauseBreaks(3600 * 6 * 1000)
           }
         }, {
           label: i18next.t('main.untilMorning'),
