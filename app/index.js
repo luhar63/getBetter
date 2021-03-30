@@ -147,7 +147,7 @@ function loadSettings() {
     updateTray()
   })
   createWelcomeWindow(settings);
-  checkMoodStatus(settings);
+  checkMoodStatus();
   // showNotificationWindow();
 }
 
@@ -277,12 +277,12 @@ function numberOfDisplays() {
   return electron.screen.getAllDisplays().length
 }
 
-function checkMoodStatus(settings) {
+function checkMoodStatus() {
   if (settings.get('isFirstRun')) {
     this.setTimeout(() => {
-      checkMoodStatus(settings);
+      checkMoodStatus();
       // }, 300000);
-    }, 5000);
+    }, 60000);
     return
   }
   if (!settings.get('next-mood-time')) {
@@ -303,8 +303,10 @@ ipcMain.on('mood', function (event, mood) {
   const interval = settings.get('moodQuestionInterval');
   settings.set('next-mood-time', Date.now() + interval);
   loadIdeas(mood);
-  moodsWindow.hide();
-  moodsWindow.close();
+  if (moodsWindow) {
+    moodsWindow.blur();
+    moodsWindow.close();
+  }
   moodsWindow = null;
 });
 
@@ -980,7 +982,7 @@ function createMoodsWindow() {
         // get focus on the last app
         Menu.sendActionToFirstResponder('hide:')
       }
-      moodsWindow = null
+      // moodsWindow = null
     })
   }
   // if (env === 'development') {

@@ -1,5 +1,5 @@
 const fs = require('fs')
-const defaultSettings = require('./defaultSettings')
+const defaultSettings = require('./defaultsettings')
 const log = require('electron-log')
 
 class Settings {

@@ -296,7 +296,7 @@ module.exports =
       data: ['Short walks', 'Taking a walk allows you to enjoy a change of scenery and gets you in a ' +
         'different frame of mind. Research shows that a brief walk, especially one outdoors, lowers levels of' +
         ' the stress hormone cortisol. Cortisol not only increases with stress, but it also mobilizes fat and deposits' +
-        ' it on your waist and tummy.', 5, 'Just 30 minutes of walking every day can increase cardiovascular fitness,' + +
+        ' it on your waist and tummy.', 5, 'Just 30 minutes of walking every day can increase cardiovascular fitness,' +
         ' and reduces excess body fat. Would you like to take a short walk?'],
       enabled: true
     },
