@@ -108,12 +108,3 @@
 .tooltip i {
   margin-right: 10px;
 }
-
-.appearance label {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  min-width: 200px;
-  margin-bottom: 32px;
-}
