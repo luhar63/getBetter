@@ -32,7 +32,7 @@ function createWindowPrototype(modalPath, width, height) {
     window.loadURL(modalPath)
     if (window) {
         window.on('closed', () => {
-            window = null
+            window = null;
         })
     }
     // if (env === 'development') {

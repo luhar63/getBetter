@@ -2,7 +2,7 @@ const EventEmitter = require('events')
 const log = require('electron-log')
 
 class NaturalBreaksManager extends EventEmitter {
-  constructor (settings) {
+  constructor(settings) {
     super()
     this.settings = settings
     this.usingNaturalBreaks = settings.get('naturalBreaks')
@@ -14,22 +14,22 @@ class NaturalBreaksManager extends EventEmitter {
     }
   }
 
-  start () {
+  start() {
     this.usingNaturalBreaks = true
     this._checkIdleTime()
-    log.info('Stretchly: starting Idle time monitoring')
+    log.info('getBetter: starting Idle time monitoring')
   }
 
-  stop () {
+  stop() {
     this.usingNaturalBreaks = false
     this.isOnNaturalBreak = false
     this.isSchedulerCleared = false
     clearTimeout(this.timer)
     this.timer = null
-    log.info('Stretchly: stopping Idle time monitoring')
+    log.info('getBetter: stopping Idle time monitoring')
   }
 
-  get idleTime () {
+  get idleTime() {
     if (this.usingNaturalBreaks) {
       return require('electron').powerMonitor.getSystemIdleTime() * 1000
     } else {
@@ -37,7 +37,7 @@ class NaturalBreaksManager extends EventEmitter {
     }
   }
 
-  _checkIdleTime () {
+  _checkIdleTime() {
     let lastIdleTime = 0
     this.timer = setInterval(() => {
       const idleTime = this.idleTime

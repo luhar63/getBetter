@@ -44,18 +44,19 @@
 }
 
 .breaks > :nth-child(2) {
-  font-size: 18px;
+  font-size: 12px;
   letter-spacing: 0.26px;
-  line-height: 18px;
+  line-height: 12px;
+  text-align: right;
 }
 
 .breaks > :nth-child(2) > a {
   display: none;
 }
 
-.breaks > :nth-child(2) > a:hover {
+/* .breaks > :nth-child(2) > a:hover {
   color: #ffff00;
-}
+} */
 
 .breaks > :nth-child(2) > a img {
   /* https://codepen.io/sosuke/pen/Pjoqqp */
@@ -106,4 +107,13 @@
 
 .tooltip i {
   margin-right: 10px;
+}
+
+.appearance label {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  min-width: 200px;
+  margin-bottom: 32px;
 }

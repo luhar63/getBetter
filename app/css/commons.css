@@ -59,7 +59,7 @@ progress[value]::-webkit-progress-value {
 .tooltip.top .tiptext {
   bottom: 150%;
   left: 50%;
-  margin-left: -60px;
+  margin-left: -30px;
 }
 
 .tooltip.top .tiptext::after {

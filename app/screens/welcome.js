@@ -67,10 +67,16 @@ function currentSlide(n) {
 
 function showSlides(n) {
     var i;
+    var container = document.getElementsByClassName("slideshow-container")[0];
     var slides = document.getElementsByClassName("mySlides");
     var dots = document.getElementsByClassName("dot");
-    if (n > slides.length) { slideIndex = 1 }
-    if (n < 1) { slideIndex = slides.length }
+    container.classList.remove('last');
+    container.classList.remove('first');
+    if (n > slides.length || n < 1) {
+        return;
+    }
+    if (n == slides.length) { container.classList.add('last'); }
+    else if (n == 1) { container.classList.add('first'); }
     for (i = 0; i < slides.length; i++) {
         slides[i].style.display = "none";
     }

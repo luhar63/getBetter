@@ -29,7 +29,7 @@
         display: inline-block;
         font: 14px sans-serif;
         height: 15px;
-        margin: 0 17px 0;
+        margin: 0 17px 5px;
         padding: 10px;
         width: 30px;
       }
@@ -266,6 +266,20 @@
       }
       .italics {
         font-style: italic;
+      }
+      .appearance label {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        min-width: 200px;
+        margin-bottom: 32px;
+      }
+      .theme-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
       }
     </style>
   </head>
@@ -515,79 +529,70 @@
           <div class="mar-b-20">
             <span data-i18next="preferences.theme.appearance"> </span>
           </div>
-          <div class="appearance">
-            <input
-              type="radio"
-              value="#478484"
-              name="mainColor"
-              id="greenClouds"
-            />
-            <label
-              data-i18next="preferences.theme.greenClouds"
-              for="greenClouds"
-            ></label>
-          </div>
-          <div class="appearance">
-            <input
-              type="radio"
-              value="#633738"
-              name="mainColor"
-              id="autumnBeBlessed"
-            />
-            <label
-              data-i18next="preferences.theme.autumnBeBlessed"
-              for="autumnBeBlessed"
-            ></label>
+          <div class="theme-container">
+            <div class="appearance">
+              <input
+                type="radio"
+                value="#633738"
+                name="mainColor"
+                id="autumnBeBlessed"
+              />
+              <label
+                data-i18next="preferences.theme.autumnBeBlessed"
+                for="autumnBeBlessed"
+              ></label>
+            </div>
+
+            <div class="appearance">
+              <input
+                type="radio"
+                value="#ffffff"
+                name="mainColor"
+                id="snowWhite"
+              />
+              <label
+                data-i18next="preferences.theme.snowWhite"
+                for="snowWhite"
+              ></label>
+            </div>
+            <div class="appearance">
+              <input
+                type="radio"
+                value="#1D1F21"
+                name="mainColor"
+                id="graphiteCrystal"
+              />
+              <label
+                data-i18next="preferences.theme.graphiteCrystal"
+                for="graphiteCrystal"
+              ></label>
+            </div>
+            <div class="appearance">
+              <input
+                type="radio"
+                value="#A49898"
+                name="mainColor"
+                id="coffeeKisses"
+              />
+              <label
+                data-i18next="preferences.theme.coffeeKisses"
+                for="coffeeKisses"
+              ></label>
+            </div>
+            <div class="appearance">
+              <input
+                type="radio"
+                value="#567890"
+                name="mainColor"
+                id="morningSwim"
+              />
+              <label
+                data-i18next="preferences.theme.morningSwim"
+                for="morningSwim"
+              ></label>
+            </div>
           </div>
 
-          <div class="appearance">
-            <input
-              type="radio"
-              value="#ffffff"
-              name="mainColor"
-              id="snowWhite"
-            />
-            <label
-              data-i18next="preferences.theme.snowWhite"
-              for="snowWhite"
-            ></label>
-          </div>
-          <div class="appearance">
-            <input
-              type="radio"
-              value="#1D1F21"
-              name="mainColor"
-              id="graphiteCrystal"
-            />
-            <label
-              data-i18next="preferences.theme.graphiteCrystal"
-              for="graphiteCrystal"
-            ></label>
-          </div>
-          <div class="appearance">
-            <input
-              type="radio"
-              value="#A49898"
-              name="mainColor"
-              id="coffeeKisses"
-            />
-            <label
-              data-i18next="preferences.theme.coffeeKisses"
-              for="coffeeKisses"
-            ></label>
-          </div>
-          <div class="appearance">
-            <input
-              type="radio"
-              value="#567890"
-              name="mainColor"
-              id="morningSwim"
-            />
-            <label
-              data-i18next="preferences.theme.morningSwim"
-              for="morningSwim"
-            ></label>
-          </div>
           <!-- <div>
             <input
               type="checkbox"
@@ -617,36 +622,41 @@
               for="enableSounds"
             ></label>
           </div>
-          <div class="sounds">
-            <input
-              type="radio"
-              value="crystal-glass"
-              name="audio"
-              id="crystalGlass"
-            />
-            <label
-              data-i18next="preferences.theme.crystalGlass"
-              for="crystalGlass"
-            ></label>
-            <i class="fas fa-volume-up" title="play sound"></i>
-          </div>
-          <div class="sounds">
-            <input
-              type="radio"
-              value="wind-chime"
-              name="audio"
-              id="windChime"
-            />
-            <label
-              data-i18next="preferences.theme.windChime"
-              for="windChime"
-            ></label>
-            <i class="fas fa-volume-up" title="play sound"></i>
-          </div>
-          <div class="sounds">
-            <input type="radio" value="tic-toc" name="audio" id="ticToc" />
-            <label data-i18next="preferences.theme.ticToc" for="ticToc"></label>
-            <i class="fas fa-volume-up" title="play sound"></i>
+          <div class="theme-container">
+            <div class="sounds">
+              <input
+                type="radio"
+                value="crystal-glass"
+                name="audio"
+                id="crystalGlass"
+              />
+              <label
+                data-i18next="preferences.theme.crystalGlass"
+                for="crystalGlass"
+              ></label>
+              <i class="fas fa-volume-up" title="play sound"></i>
+            </div>
+            <div class="sounds">
+              <input
+                type="radio"
+                value="wind-chime"
+                name="audio"
+                id="windChime"
+              />
+              <label
+                data-i18next="preferences.theme.windChime"
+                for="windChime"
+              ></label>
+              <i class="fas fa-volume-up" title="play sound"></i>
+            </div>
+            <div class="sounds">
+              <input type="radio" value="tic-toc" name="audio" id="ticToc" />
+              <label
+                data-i18next="preferences.theme.ticToc"
+                for="ticToc"
+              ></label>
+              <i class="fas fa-volume-up" title="play sound"></i>
+            </div>
           </div>
         </div>
         <div class="about hidden">

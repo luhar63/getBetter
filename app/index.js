@@ -168,8 +168,10 @@ function onSuspendOrLock() {
   log.info('System: suspend or lock')
   if (!breakPlanner.isPaused) {
     pausedForSuspendOrLock = true;
-    pauseBreaks(1)
-    updateTray()
+    if (!breakWins) {
+      pauseBreaks(1)
+      updateTray()
+    }
   }
 }
 
@@ -416,6 +418,7 @@ function showNotificationWindow() {
     }
     notificationWins.push(notificationWinLocal)
 
+
     if (!settings.get('allScreens')) {
       break
     }
@@ -498,6 +501,7 @@ function startBreak() {
   // nextIdea = null
   idea = nextIdea;
   breakDuration = idea[2] * 60 * 1000;
+  // breakDuration = 60 * 1000;
   console.log("breakDuration", breakDuration);
   if (settings.get('breakStartSoundPlaying') && !settings.get('silentNotifications')) {
     processWin.webContents.send('playSound', settings.get('audio'), settings.get('volume'))
@@ -894,6 +898,7 @@ function createPreferencesWindow() {
     }
   })
   preferencesWin.hide();
+  preferencesWin.setMenu(null);
   preferencesWin.loadURL(modalPath);
   preferencesWin.once('ready-to-show', () => {
     preferencesWin.show();
@@ -1003,9 +1008,11 @@ ipcMain.on('restore-defaults', (event) => {
     if (returnValue.response === 0) {
       settings.restoreDefaults()
       i18next.changeLanguage(settings.get('language'))
+      breakPlanner.reset();
       updateTray()
       event.sender.send('renderSettings', settingsToSend())
       event.sender.reload();
+
     }
   })
 })

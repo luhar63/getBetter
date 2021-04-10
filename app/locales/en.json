@@ -7,7 +7,7 @@
     "downloadLatestVersion": "Download latest version",
     "toBreak": "Break",
     "toMicrobreak": "Mini Break",
-    "skipToTheNext": "Skip to the break",
+    "skipToTheNext": "Take a break now",
     "resume": "Resume Breaks",
     "pause": "Pause Breaks",
     "forHour": "1 hour",
@@ -74,10 +74,10 @@
     },
     "theme": {
       "appearance": "Theme:",
-      "greenClouds": "Green clouds",
-      "autumnBeBlessed": "Autumn be blessed",
-      "graphiteCrystal": "Graphite crystal",
-      "coffeeKisses": "Coffee kisses",
+      "greenClouds": "Green",
+      "autumnBeBlessed": "Autumn",
+      "graphiteCrystal": "Graphite",
+      "coffeeKisses": "Coffee",
       "morningSwim": "Morning swim",
       "transparentMode": "Enable transparency",
       "sounds": "Sounds:",
@@ -89,7 +89,7 @@
       "colour": "Colour",
       "monochrome": "Monochrome",
       "invertedMonochrome": "Inverted Monochrome",
-      "snowWhite": "Snow white"
+      "snowWhite": "white"
     }
   },
   "contributorPreferences": {

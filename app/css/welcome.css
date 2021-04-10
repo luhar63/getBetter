@@ -38,8 +38,16 @@
   max-width: 1000px;
   position: relative;
   margin: auto;
+  min-height: 200px;
 }
 
+.slideshow-container.first .prev {
+  display: none;
+}
+
+.slideshow-container.last .next {
+  display: none;
+}
 /* Hide the images by default */
 .mySlides {
   display: none;

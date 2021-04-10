@@ -29,7 +29,9 @@ class BreaksPlanner extends EventEmitter {
         })
 
         this.naturalBreaksManager.on('clearBreakScheduler', () => {
+            // console.log(this.scheduler.reference, this.isPaused);
             if (!this.isPaused && this.scheduler.reference !== 'finishMicrobreak' && this.scheduler.reference !== 'finishBreak' && this.scheduler.reference !== null) {
+                log.info('why god why?');
                 this.clear()
                 log.info('getBetter: pausing breaks because of idle time')
             }
