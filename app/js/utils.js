@@ -147,7 +147,7 @@ function displaysWidth(displayID = -1) {
         theScreen = electron.screen.getDisplayNearestPoint(electron.screen.getCursorScreenPoint())
     } else if (displayID >= numberOfDisplays()) {
         // Graceful handling of invalid displayID
-        log.warn('Stretchly: invalid displayID to displaysY')
+        log.warn('getBetter: invalid displayID to displaysY')
         theScreen = electron.screen.getDisplayNearestPoint(electron.screen.getCursorScreenPoint())
     } else {
         const screens = electron.screen.getAllDisplays()

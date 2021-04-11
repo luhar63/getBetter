@@ -57,6 +57,11 @@
         color: #633738;
       }
 
+      #turqoise + label:before {
+        background: #06b5c8;
+        color: #06b5c8;
+      }
+
       #graphiteCrystal + label:before {
         background: #1d1f21;
         color: #1d1f21;
@@ -81,7 +86,8 @@
       .appearance > #autumnBeBlessed:checked + label:before,
       .appearance > #graphiteCrystal:checked + label:before,
       .appearance > #coffeeKisses:checked + label:before,
-      .appearance > #morningSwim:checked + label:before {
+      .appearance > #morningSwim:checked + label:before,
+      .appearance > #turqoise:checked + label:before {
         color: #ffffff;
       }
       .appearance > #snowWhite:checked + label:before {
@@ -530,6 +536,18 @@
             <span data-i18next="preferences.theme.appearance"> </span>
           </div>
           <div class="theme-container">
+            <div class="appearance">
+              <input
+                type="radio"
+                value="#06b5c8"
+                name="mainColor"
+                id="turqoise"
+              />
+              <label
+                data-i18next="preferences.theme.turqoise"
+                for="turqoise"
+              ></label>
+            </div>
             <div class="appearance">
               <input
                 type="radio"

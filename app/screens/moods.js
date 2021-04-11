@@ -54,14 +54,13 @@ function clickHandler(event) {
     // Don't follow the link
     event.preventDefault();
     // Log the clicked element in the console
-    console.log(event.target);
     resetAllMoods();
     let li = event.target.closest('.mood');
     li.setAttribute("class", "mood selected");
     ipcRenderer.send('mood', li.dataset.mood);
     container.style.display = 'none';
     recorded.style.display = "flex";
-    runTimer(8);
+    runTimer(5);
 }
 
 

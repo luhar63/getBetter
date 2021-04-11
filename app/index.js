@@ -359,8 +359,8 @@ function showNotificationWindow() {
 
   for (let localDisplayId = 0; localDisplayId < numberOfDisplays(); localDisplayId++) {
     const windowOptions = {
-      width: Number.parseInt(Utils.displaysWidth(localDisplayId) * 0.35),
-      height: Number.parseInt(Utils.displaysHeight(localDisplayId) * 0.35),
+      width: Number.parseInt(510),
+      height: Number.parseInt(310),
       autoHideMenuBar: true,
       icon: windowIconPath(),
       resizable: false,
@@ -389,7 +389,7 @@ function showNotificationWindow() {
     // windowOptions.y = bounds.height;
 
     let notificationWinLocal = new BrowserWindow(windowOptions);
-    // console.log(bounds.width, bounds.height, windowOptions.x, windowOptions.y, notificationWinLocal.getPosition());
+    console.log(windowOptions.width, windowOptions.height);
     // notificationWinLocal.hide();
     notificationWinLocal.setOpacity(0);
     notificationWinLocal.once('ready-to-show', () => {

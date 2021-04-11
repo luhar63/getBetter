@@ -23,7 +23,7 @@ module.exports = {
     microbreakPostponableDurationPercent: 30,
     breakPostponesLimit: 1,
     breakPostponableDurationPercent: 30,
-    mainColor: '#1D1F21',
+    mainColor: '#06b5c8',
     transparentMode: false,
     opacity: 0.9,
     audio: 'crystal-glass',
