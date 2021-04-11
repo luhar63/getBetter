@@ -14,9 +14,13 @@ ipcRenderer.on('notify', (event, idea, started, settings) => {
         tt.innerHTML = idea[3] || defaultText;
     });
 
+    const mainColor = settings.data.mainColor;
+    document.body.classList.add(mainColor.substring(1));
+
     const interval = 100;
     let pause = false;
-    const duration = settings.data.notificationDuration
+    const duration = settings.data.notificationDuration;
+
     let diff = 0
     window.setInterval(() => {
         if (!pause) {
@@ -84,11 +88,15 @@ document.querySelector('.dnd-select').addEventListener('click', function (event)
 });
 
 document.querySelector('.dnd').addEventListener('click', function (event) {
-    document.querySelector('.time-slider').classList.remove('hide')
+    document.querySelector('.notification-text').classList.add('hide');
+    document.querySelector('.action-buttons').classList.add('hide');
+    document.querySelector('.time-slider').classList.remove('hide');
 });
 
 document.querySelector('.close').addEventListener('click', function (event) {
-    document.querySelector('.time-slider').classList.add('hide')
+    document.querySelector('.time-slider').classList.add('hide');
+    document.querySelector('.notification-text').classList.remove('hide');
+    document.querySelector('.action-buttons').classList.remove('hide');
 });
 
 

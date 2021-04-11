@@ -8,6 +8,9 @@
 
     <script defer src="./notification.js"></script>
     <style>
+      .notification-page {
+        background: inherit;
+      }
       .notification-page .welcome-logo {
         display: flex;
         justify-content: center;
@@ -26,7 +29,15 @@
       .notification-page .welcome-logo .title {
         font-size: 1.2rem;
         margin-block-start: 10px;
+
         /* margin-right: 38px; */
+      }
+      .notification-page .welcome-logo .title span {
+        color: var(--main-color);
+      }
+
+      .notification-page .main-content .main.hide {
+        display: none;
       }
       .notification-page .main-content {
         display: flex;
@@ -48,6 +59,9 @@
         margin-bottom: 20px;
       }
 
+      .notification-text.hide {
+        display: none;
+      }
       .action-buttons {
         padding: 10px;
 
@@ -55,6 +69,9 @@
         border-top: 1px solid var(--main-color);
         display: flex;
         justify-content: space-between;
+      }
+      .action-buttons.hide {
+        display: none;
       }
 
       .action-buttons button {
@@ -152,7 +169,7 @@
         /* position: relative; */
         padding: 10px 0;
         box-sizing: border-box;
-        background: var(--main-bg-color);
+        /* background: var(--main-bg-color); */
         height: calc(100% - 10vh);
         margin-top: -10vh;
         padding: 1.5rem;
@@ -191,7 +208,7 @@
       }
       .rs-range::-moz-range-track {
         width: 100%;
-        height: 2px;
+        height: 4px;
         cursor: pointer;
         box-shadow: none;
         background: var(--track-color);
@@ -290,6 +307,65 @@
         display: block;
         height: inherit;
       }
+
+      .ffffff.notification-page {
+        background: #fff;
+        color: #000000;
+      }
+
+      .ffffff.notification-page .action-buttons {
+        border-color: #000000;
+      }
+
+      .ffffff.notification-page {
+        color: #000000;
+      }
+      .ffffff.notification-page .box-minmax {
+        color: #000000;
+      }
+
+      .ffffff.notification-page .rs-label {
+        border: 2px solid #000000;
+        color: #000000;
+      }
+      .notification-page .welcome-logo .title span {
+        color: #000000;
+      }
+      .ffffff.notification-page .rs-range::-moz-range-track {
+        background: #ffffff;
+      }
+      .ffffff.notification-page .time-slider {
+        background: #ffffff;
+      }
+      .ffffff .breaks > :nth-child(2) > a:hover {
+        color: #ffffff;
+      }
+
+      .ffffff.notification-page .rs-range::-moz-range-thumb,
+      .ffffff.notification-page .rs-range::-webkit-slider-thumb,
+      .ffffff.notification-page .rs-range::-moz-range-track,
+      .ffffff.notification-page .rs-range::-webkit-slider-runnable-track {
+        background: #000000;
+      }
+      .ffffff .breaks > :nth-child(2) > a:hover img,
+      .ffffff .breaks > :nth-child(2) > a:hover {
+        color: #000000;
+      }
+
+      .ffffff .breaks > :nth-child(2) .tiptext,
+      .ffffff .breaks > :nth-child(2) .tiptext {
+        color: #000000;
+        background-color: #ffffff;
+        border: 1px solid #000000;
+      }
+
+      .ffffff .breaks > :nth-child(2) > a img {
+        filter: hue-rotate(288deg) brightness(102%) contrast(102%);
+      }
+
+      .ffffff .breaks > :nth-child(2) > a:hover img {
+        filter: hue-rotate(359deg) brightness(101%) contrast(103%);
+      }
     </style>
   </head>
   <body class="notification-page">
@@ -298,7 +374,6 @@
     </div>
     <header>
       <div class="welcome-logo">
-        <img src="../images/icon.png" class="responsive" />
         <div class="title">get<span>Better</span></div>
       </div>
     </header>

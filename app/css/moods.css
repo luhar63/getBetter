@@ -95,3 +95,19 @@ a.close i {
 .mood .text {
   text-align: center;
 }
+.recorded-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 80vh;
+  display: none;
+}
+.recorded {
+  font-size: 1.2rem;
+}
+
+.timeleft,
+.time {
+  color: #a73a9c;
+}

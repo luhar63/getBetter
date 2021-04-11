@@ -299,12 +299,15 @@ function checkMoodStatus() {
 
 
 
-ipcMain.on('mood', function (event, mood) {
+ipcMain.on('mood', function (event, mood = 'common') {
   // console.log("MOOD", mood);
   settings.set('current-mood', mood);
   const interval = settings.get('moodQuestionInterval');
   settings.set('next-mood-time', Date.now() + interval);
   loadIdeas(mood);
+
+});
+ipcMain.on('close-mood', function (event, mood) {
   if (moodsWindow) {
     moodsWindow.blur();
     moodsWindow.close();
@@ -313,7 +316,7 @@ ipcMain.on('mood', function (event, mood) {
 });
 
 
-function loadIdeas(mood = 'happy') {
+function loadIdeas(mood = 'common') {
   let breakIdeasData;
   let microbreakIdeasData;
   if (settings.get('useIdeasFromSettings')) {
@@ -328,8 +331,9 @@ function loadIdeas(mood = 'happy') {
 }
 
 function startBreakNotification() {
-  if (settings.get('isFirstRun')) {
+  if (settings.get('isFirstRun') && moodsWindow) {
     skipbreak();
+    return;
   }
   const notificationText = i18next.t('main.breakIn', { seconds: settings.get('breakNotificationInterval') / 1000 });
   // showNotification();
@@ -363,7 +367,7 @@ function showNotificationWindow() {
       frame: false,
       show: false,
       transparent: settings.get('transparentMode'),
-      backgroundColor: nativeTheme.shouldUseDarkColors ? "#2d2d2d" : "#ededed",
+      backgroundColor: calculateBackgroundColor(),
       skipTaskbar: true,
       focusable: true,
       title: 'getBetter',
@@ -979,6 +983,11 @@ function createMoodsWindow() {
     skipTaskbar: true,
     focusable: true,
     frame: false,
+  });
+
+
+  moodsWindow.once('ready-to-show', () => {
+    moodsWindow.webContents.send('mooddata', breakPlanner.scheduler.timeLeft);
   });
   moodsWindow.loadURL(modalPath)
   if (moodsWindow) {
