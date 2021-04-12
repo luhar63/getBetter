@@ -122,7 +122,7 @@ module.exports =
       enabled: true
     },
     {
-      data: ["Plan for your next event on your Bucket list", "Planning a fun event that'll happen sometime in near future maybe like a mini road trip or a concert or a night out with friends, can decrease Cortisol, also known as the stress hormone. Thinking or planning activities that you look forward to can help in reducing stress and can make you feel better.', 10, ‘Planning vacations or events is fun isn't it? But what's more fun is that planning makes you feel less stressed and more productive. Want to check off the next tick on your bucket list?"],
+      data: ["Plan for your next event on your Bucket list", "Planning a fun event that'll happen sometime in near future maybe like a mini road trip or a concert or a night out with friends, can decrease Cortisol, also known as the stress hormone. Thinking or planning activities that you look forward to can help in reducing stress and can make you feel better.", 10, "Planning vacations or events is fun isn't it? But what's more fun is that planning makes you feel less stressed and more productive. Want to check off the next tick on your bucket list?"],
       enabled: true
     },
     {
@@ -187,7 +187,7 @@ module.exports =
       enabled: true
     },
     {
-      data: ["Plan for your next event on your Bucket list", "Planning a fun event that'll happen sometime in near future maybe like a mini road trip or a concert or a night out with friends, can decrease Cortisol, also known as the stress hormone. Thinking or planning activities that you look forward to can help in reducing stress and can make you feel better.', 10, ‘Planning vacations or events is fun isn't it? But what's more fun is that planning makes you feel less stressed and more productive. Want to check off the next tick on your bucket list?"],
+      data: ["Plan for your next event on your Bucket list", "Planning a fun event that'll happen sometime in near future maybe like a mini road trip or a concert or a night out with friends, can decrease Cortisol, also known as the stress hormone. Thinking or planning activities that you look forward to can help in reducing stress and can make you feel better.", 10, "Planning vacations or events is fun isn't it? But what's more fun is that planning makes you feel less stressed and more productive. Want to check off the next tick on your bucket list?"],
       enabled: true
     },
     {
