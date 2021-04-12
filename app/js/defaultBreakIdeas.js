@@ -89,7 +89,7 @@ module.exports =
       enabled: true
     },
     {
-      data: ["Try to get out of our head", "When your mind is wandering away from what you're doing, you’re a lot less likely to be feeling happy. Getting out of your head and back to your senses with the help of sense of touch, can bring you back to moment. Whether that is popping bubble wrap, sorting your change jar to cash in at the bank, or making homemade slime with the littles, anything works!", 10, "Are you overwhelmed by all the thoughts in your head? Do you want to get out of that space by trying some activities?"],
+      data: ["Try to get out of our head", "When your mind is wandering away from what you're doing, you’re a lot less likely to be feeling happy. Getting out of your head and back to your senses with the help of sense of touch, can bring you back to moment. Whether that is popping bubble wrap, sorting your change jar to cash in at the bank, or making homemade slime, anything works!", 10, "Are you overwhelmed by all the thoughts in your head? Do you want to get out of that space by trying some activities?"],
       enabled: true
     },
     {
