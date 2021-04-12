@@ -94,6 +94,8 @@ package-lock.json
 
 .idea/
 
+.vs/
+
 release-builds/
 
 package-lock.json
