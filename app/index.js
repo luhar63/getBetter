@@ -412,6 +412,7 @@ function showNotificationWindow() {
       //   notificationWinLocal.setKiosk(settings.get('fullscreen'))
       // }
       // notificationWinLocal.webContents.send('breakIdea', idea)
+      log.info(nextIdea);
       notificationWinLocal.webContents.send('notify', nextIdea, Date.now(), settings)
       // if (!settings.get('fullscreen') && process.platform !== 'darwin') {
       //   setTimeout(() => {

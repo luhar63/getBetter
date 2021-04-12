@@ -100,7 +100,7 @@ module.exports =
       enabled: true
     },
     {
-      data: ["Gratitude Journaling", "Journaling for five minutes a day about what we are grateful  for can enhance our long-term happiness by over 10%. Those who pay attention to the good in their life instead of the bad, are more likely to feel positive about their life.", 10, "Writing in a gratitude journal improves sleep, according to a 2011 study. Do you want to try some journaling?"],
+      data: ["Gratitude Journaling", "Journaling for five minutes a day about what we are grateful for can enhance our long-term happiness by over 10%. Those who pay attention to the good in their life instead of the bad, are more likely to feel positive about their life.", 10, "Writing in a gratitude journal improves sleep, according to a 2011 study. Do you want to try some journaling?"],
       enabled: true
     },
     {
