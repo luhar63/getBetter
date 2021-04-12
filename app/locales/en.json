@@ -46,7 +46,7 @@
       "showIdeas": "Show exercise tips during breaks",
       "allScreens": "Shows breaks on all monitors",
       "monitorIdleTime": "Pause breaks when system is idle.",
-      "monitorDnd": "Show breaks even in Do Not Disturb mode",
+      "monitorDnd": "Show breaks even in System's Do Not Disturb mode",
       "language": "Select language:",
       "restoreDefaults": "Restore defaults"
     },

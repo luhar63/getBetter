@@ -44,8 +44,9 @@ ipcRenderer.on('progress', (event, started, duration, strictMode, postpone, post
             Utils.canSkip(strictMode, postpone, passedPercent, postponePercent)
             // postponeElement.style.display =
             //     Utils.canPostpone(postpone, passedPercent, postponePercent) ? 'flex' : 'none'
+            // console.log(Utils.canSkip(strictMode, postpone, passedPercent, postponePercent));
             closeElement.style.display =
-                Utils.canSkip(strictMode, postpone, passedPercent, postponePercent) ? 'flex' : 'flex'
+                Utils.canSkip(strictMode) ? 'flex' : 'none'
             progress.value = (100 - passedPercent) * progress.max / 100
             progressTime.innerHTML = Utils.formatTimeRemaining(Math.trunc(duration - Date.now() + started))
         }

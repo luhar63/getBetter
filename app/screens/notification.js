@@ -4,6 +4,8 @@ const Utils = remote.require('./js/utils')
 const defaultText = "You have been on the screen for a long time now. You should take a break.";
 
 ipcRenderer.on('notify', (event, idea, started, settings) => {
+    document.querySelector('.action-buttons .skip').style.display =
+        Utils.canSkip(settings.data.breakStrictMode) ? 'block' : 'none';
     const progress = document.querySelector('.progress-bar')
     const progressTime = document.querySelector('.progress-container');
     const widthMax = progressTime.clientWidth;
@@ -43,6 +45,7 @@ ipcRenderer.on('notify', (event, idea, started, settings) => {
     document.querySelector('.notification-page').addEventListener('mouseout', function (event) {
         pause = false;
     });
+
 
     //     // window.setInterval(() => {
     //     //     if (Date.now() - started < duration) {
@@ -98,5 +101,7 @@ document.querySelector('.close').addEventListener('click', function (event) {
     document.querySelector('.notification-text').classList.remove('hide');
     document.querySelector('.action-buttons').classList.remove('hide');
 });
+
+
 
 

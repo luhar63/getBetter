@@ -81,15 +81,15 @@ const { UntilMorning } = require('./js/untilMorning')
 // const Command = require('./js/commands')
 
 const gotTheLock = app.requestSingleInstanceLock()
-console.log("got the lock", gotTheLock);
-// if (!gotTheLock) {
-//   console.log('Stretchly command instance: started\n')
-//   // const args = process.argv.slice(app.isPackaged ? 1 : 2)
-//   // const cmd = new Command(args, app.getVersion())
-//   // cmd.runOrForward()
-//   console.log("inside");
-//   app.quit()
-// }
+// console.log("got the lock", gotTheLock);
+if (!gotTheLock) {
+  console.log('getBetter command instance: already running\n');
+  // const args = process.argv.slice(app.isPackaged ? 1 : 2)
+  // const cmd = new Command(args, app.getVersion())
+  // cmd.runOrForward()
+  // console.log("inside");
+  app.quit()
+}
 
 nativeTheme.on('updated', function theThemeHasChanged() {
   appIcon.setImage(trayIconPath())
@@ -389,7 +389,7 @@ function showNotificationWindow() {
     // windowOptions.y = bounds.height;
 
     let notificationWinLocal = new BrowserWindow(windowOptions);
-    console.log(windowOptions.width, windowOptions.height);
+    // console.log(windowOptions.width, windowOptions.height);
     // notificationWinLocal.hide();
     notificationWinLocal.setOpacity(0);
     notificationWinLocal.once('ready-to-show', () => {
@@ -420,6 +420,11 @@ function showNotificationWindow() {
         notificationWinLocal = null
       })
     }
+    if (!settings.get('silentNotifications')) {
+      setTimeout(() => {
+        processWin.webContents.send('playSound', 'hint', settings.get('volume') * 0.1)
+      }, 100);
+    }
     notificationWins.push(notificationWinLocal)
 
 
@@ -447,7 +452,7 @@ function animateIn(window, maxX, maxY, maxW, maxH) {
         Menu.sendActionToFirstResponder('hide:')
       }
     }
-    x -= 10;
+    x -= 20;
     // console.log(x, y);
     window.setPosition(x, y);
     if (flag) {
@@ -456,7 +461,7 @@ function animateIn(window, maxX, maxY, maxW, maxH) {
       flag = false;
     }
 
-  }, 0.001);
+  }, 0.0001);
 }
 
 function animateOut(window, maxX, maxY, maxW, maxH) {
@@ -506,7 +511,7 @@ function startBreak() {
   idea = nextIdea;
   breakDuration = idea[2] * 60 * 1000;
   // breakDuration = 60 * 1000;
-  console.log("breakDuration", breakDuration);
+  // console.log("breakDuration", breakDuration);
   if (settings.get('breakStartSoundPlaying') && !settings.get('silentNotifications')) {
     processWin.webContents.send('playSound', settings.get('audio'), settings.get('volume'))
   }
