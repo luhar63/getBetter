@@ -796,7 +796,7 @@ function getTrayMenu() {
     })
   }
 
-  if (!(breakPlanner.isPaused || breakPlanner.dndManager.isOnDnd)) {
+  if (!(breakPlanner.isPaused || breakPlanner.dndManager.isOnDnd || breakPlanner.scheduler.timeLeft <= 0)) {
     if (settings.get('break') || settings.get('microbreak')) {
       trayMenu.push({
         label: i18next.t('main.skipToTheNext'),
