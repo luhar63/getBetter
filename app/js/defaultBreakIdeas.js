@@ -33,13 +33,11 @@ module.exports =
 
   angry: [
     {
-      data: ["Going outside", "Nature is linked to positive emotions and decreased stress and anxiety. Spending time walking among or simply looking at trees lowers blood pressure and reduces the stress-related hormones cortisol and adrenaline. Anxiety, depression and anger are notably decreased after spending time outdoors.",
-        10, "Did you know that 20 minutes a day outside has the same effect as an antidepressant? Do you want to go outside?"],
+      data: ["Going outside", "Nature is linked to positive emotions and decreased stress and anxiety. Spending time walking among or simply looking at trees lowers blood pressure and reduces the stress-related hormones cortisol and adrenaline. Anxiety, depression and anger are notably decreased after spending time outdoors.", 10, "Did you know that 20 minutes a day outside has the same effect as an antidepressant? Do you want to go outside?"],
       enabled: true
     },
     {
-      data: ["Journaling feelings", "When we are feeling overwhelmed, writing those feelings down can really help. While that might seem like a waste of time, science reveals recording our feelings is great for clarifying our thoughts, solving problems more efficiently, relieving stress, and more. Some researchers studied brain scans of volunteers and found that the act of recording their experiences calmed them.", 10,
-        "Studies have found that keeping a journal helps us look at things from a different perspective and organise our thoughts better when the world feels like it’s in chaos. Want to experience it yourself?"],
+      data: ["Journaling feelings", "When we are feeling overwhelmed, writing those feelings down can really help. While that might seem like a waste of time, science reveals recording our feelings is great for clarifying our thoughts, solving problems more efficiently, relieving stress, and more. Some researchers studied brain scans of volunteers and found that the act of recording their experiences calmed them.", 10, "Studies have found that keeping a journal helps us look at things from a different perspective and organise our thoughts better when the world feels like it’s in chaos. Want to experience it yourself?"],
       enabled: true
     },
     {
@@ -51,8 +49,7 @@ module.exports =
       enabled: true
     },
     {
-      data: ["Do something you love", "When you do something that you love every day your motivation will improve giving a much-needed boost to help you make it through the difficult times. It is also proven that it increases your happiness, which can lead to overall improved health and helps to make you more productive.", 20,
-        "Engaging in things you love and enjoy, will more likely lower your stress levels and enhance your mood. Do you want to try?"],
+      data: ["Do something you love", "When you do something that you love every day your motivation will improve giving a much-needed boost to help you make it through the difficult times. It is also proven that it increases your happiness, which can lead to overall improved health and helps to make you more productive.", 20, "Engaging in things you love and enjoy, will more likely lower your stress levels and enhance your mood. Do you want to try?"],
       enabled: true
     },
     {
@@ -75,13 +72,11 @@ module.exports =
 
   sad: [
     {
-      data: ["Decluttering our workspace", "Reorganizing workspace, cleaning up any junk that might be lying around and getting rid of unused items that are just taking up space can also help in decluttering our mind and thoughts. A clean space helps to focus at work and is often linked to positive emotions like happiness.", 10,
-        "Great time managers set up and organize their workspaces to cut down on the amount of time necessary for each task.Are you interested in becoming one?"],
+      data: ["Decluttering our workspace", "Reorganizing workspace, cleaning up any junk that might be lying around and getting rid of unused items that are just taking up space can also help in decluttering our mind and thoughts. A clean space helps to focus at work and is often linked to positive emotions like happiness.", 10, "Great time managers set up and organize their workspaces to cut down on the amount of time necessary for each task.Are you interested in becoming one?"],
       enabled: true
     },
     {
-      data: ["Going outside", "Nature is linked to positive emotions and decreased stress and anxiety. Spending time walking among or simply looking at trees lowers blood pressure and reduces the stress-related hormones cortisol and adrenaline. Anxiety, depression and anger are notably decreased after spending time outdoors.",
-        10, "Did you know that 20 minutes a day outside has the same effect as an antidepressant? Do you want to go outside?"],
+      data: ["Going outside", "Nature is linked to positive emotions and decreased stress and anxiety. Spending time walking among or simply looking at trees lowers blood pressure and reduces the stress-related hormones cortisol and adrenaline. Anxiety, depression and anger are notably decreased after spending time outdoors.", 10, "Did you know that 20 minutes a day outside has the same effect as an antidepressant? Do you want to go outside?"],
       enabled: true
     },
     {
@@ -105,8 +100,7 @@ module.exports =
       enabled: true
     },
     {
-      data: ["Gratitude Journaling", "Journaling for five minutes a day about what we are grateful  for can enhance our long-term happiness by over 10%. Those who pay attention to the good in their life instead of the bad, are more likely to feel positive about their life.", 10,
-        "Writing in a gratitude journal improves sleep, according to a 2011 study. Do you want to try some journaling?"],
+      data: ["Gratitude Journaling", "Journaling for five minutes a day about what we are grateful  for can enhance our long-term happiness by over 10%. Those who pay attention to the good in their life instead of the bad, are more likely to feel positive about their life.", 10, "Writing in a gratitude journal improves sleep, according to a 2011 study. Do you want to try some journaling?"],
       enabled: true
     },
     {
@@ -140,8 +134,7 @@ module.exports =
       enabled: true
     },
     {
-      data: ["Do something you love", "When you do something that you love every day your motivation will improve giving a much-needed boost to help you make it through the difficult times. It is also proven that it increases your happiness, which can lead to overall improved health and helps to make you more productive.", 20,
-        "Engaging in things you love and enjoy, will more likely lower your stress levels and enhance your mood. Do you want to try?"],
+      data: ["Do something you love", "When you do something that you love every day your motivation will improve giving a much-needed boost to help you make it through the difficult times. It is also proven that it increases your happiness, which can lead to overall improved health and helps to make you more productive.", 20, "Engaging in things you love and enjoy, will more likely lower your stress levels and enhance your mood. Do you want to try?"],
       enabled: true
     },
     {
@@ -164,8 +157,7 @@ module.exports =
       enabled: true
     },
     {
-      data: ["Gratitude Journaling", "Journaling for five minutes a day about what we are grateful  for can enhance our long-term happiness by over 10%. Those who pay attention to the good in their life instead of the bad, are more likely to feel positive about their life.", 10,
-        "Writing in a gratitude journal improves sleep, according to a 2011 study. Do you want to try some journaling?"],
+      data: ["Gratitude Journaling", "Journaling for five minutes a day about what we are grateful  for can enhance our long-term happiness by over 10%. Those who pay attention to the good in their life instead of the bad, are more likely to feel positive about their life.", 10, "Writing in a gratitude journal improves sleep, according to a 2011 study. Do you want to try some journaling?"],
       enabled: true
     },
     {
@@ -229,8 +221,7 @@ module.exports =
       enabled: true
     },
     {
-      data: ["Going outside", "Nature is linked to positive emotions and decreased stress and anxiety. Spending time walking among or simply looking at trees lowers blood pressure and reduces the stress-related hormones cortisol and adrenaline. Anxiety, depression and anger are notably decreased after spending time outdoors.",
-        10, "Did you know that 20 minutes a day outside has the same effect as an antidepressant? Do you want to go outside?"],
+      data: ["Going outside", "Nature is linked to positive emotions and decreased stress and anxiety. Spending time walking among or simply looking at trees lowers blood pressure and reduces the stress-related hormones cortisol and adrenaline. Anxiety, depression and anger are notably decreased after spending time outdoors.", 10, "Did you know that 20 minutes a day outside has the same effect as an antidepressant? Do you want to go outside?"],
       enabled: true
     },
     {
@@ -242,8 +233,7 @@ module.exports =
       enabled: true
     },
     {
-      data: ["Gratitude Journaling", "Journaling for five minutes a day about what we are grateful  for can enhance our long-term happiness by over 10%. Those who pay attention to the good in their life instead of the bad, are more likely to feel positive about their life.", 10,
-        "Writing in a gratitude journal improves sleep, according to a 2011 study. Do you want to try some journaling?"],
+      data: ["Gratitude Journaling", "Journaling for five minutes a day about what we are grateful  for can enhance our long-term happiness by over 10%. Those who pay attention to the good in their life instead of the bad, are more likely to feel positive about their life.", 10, "Writing in a gratitude journal improves sleep, according to a 2011 study. Do you want to try some journaling?"],
       enabled: true
     },
     {
