@@ -293,7 +293,7 @@ function checkMoodStatus() {
     this.setTimeout(() => {
       checkMoodStatus();
       // }, 300000);
-    }, 60000);
+    }, 30000);
     return
   }
   if (!settings.get('next-mood-time')) {
