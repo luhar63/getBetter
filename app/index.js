@@ -147,12 +147,15 @@ function loadSettings() {
     updateTray()
   })
   welcomewindow = createWelcomeWindow(settings);
-  welcomewindow.on('closed', () => {
-    if (settings.get('isFirstRun') == true) {
-      app.quit();
-    }
-    welcomewindow = null;
-  });
+  if (welcomewindow) {
+    welcomewindow.on('closed', () => {
+      if (settings.get('isFirstRun') == true) {
+        app.quit();
+      }
+      welcomewindow = null;
+    });
+  }
+
   checkMoodStatus();
   // showNotificationWindow();
 }
