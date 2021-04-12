@@ -146,7 +146,13 @@ function loadSettings() {
   breakPlanner.on('updateToolTip', function () {
     updateTray()
   })
-  createWelcomeWindow(settings);
+  welcomewindow = createWelcomeWindow(settings);
+  welcomewindow.on('closed', () => {
+    if (settings.get('isFirstRun') == true) {
+      app.quit();
+    }
+    welcomewindow = null;
+  });
   checkMoodStatus();
   // showNotificationWindow();
 }
@@ -744,7 +750,18 @@ function updateToolTip() {
 function getTrayMenu() {
   const trayMenu = []
   const doNotDisturb = breakPlanner.dndManager.isOnDnd
-
+  if (settings.get('isFirstRun')) {
+    trayMenu.push({
+      type: 'separator'
+    }, {
+      label: i18next.t('main.quitStretchly'),
+      role: 'quit',
+      click: function () {
+        app.quit()
+      }
+    })
+    return Menu.buildFromTemplate(trayMenu);
+  }
   // if (global.shared.isNewVersion) {
   //   trayMenu.push({
   //     label: i18next.t('main.downloadLatestVersion'),

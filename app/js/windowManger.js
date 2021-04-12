@@ -62,7 +62,7 @@ function createWelcomeWindow(settings) {
         }
     }
 
-
+    return welcomeWindow;
 }
 
 // function createMoodsWindow() {

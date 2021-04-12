@@ -60,7 +60,7 @@ function clickHandler(event) {
     ipcRenderer.send('mood', li.dataset.mood);
     container.style.display = 'none';
     recorded.style.display = "flex";
-    runTimer(4);
+    runTimer(5);
 }
 
 

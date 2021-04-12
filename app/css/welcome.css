@@ -3,6 +3,10 @@
 .action-button {
   margin: 20px auto;
 }
+.welcome-page {
+  background: #1d1f21;
+  color: #f3f3f3;
+}
 #welcome-start {
   font-size: 0.8rem;
   color: #a73a9c;
