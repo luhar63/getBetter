@@ -43,7 +43,7 @@ function runTimer(time) {
     let timeout = setInterval(() => {
         timeElm.innerHTML = maxTime;
         maxTime -= 1;
-        if (maxTime == 0) {
+        if (maxTime == -1) {
             clearInterval(timeout);
             ipcRenderer.send('close-mood');
         }
