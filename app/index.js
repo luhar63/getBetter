@@ -181,6 +181,9 @@ function onSuspendOrLock() {
       pauseBreaks(1)
       updateTray()
     }
+    if (moodsWindow) {
+      moodsWindow.close();
+    }
   }
 }
 
@@ -1016,15 +1019,13 @@ function createMoodsWindow() {
     moodsWindow.webContents.send('mooddata', breakPlanner.scheduler.timeLeft);
   });
   moodsWindow.loadURL(modalPath)
-  if (moodsWindow) {
-    moodsWindow.on('closed', () => {
-      if (process.platform === 'darwin') {
-        // get focus on the last app
-        Menu.sendActionToFirstResponder('hide:')
-      }
-      // moodsWindow = null
-    })
-  }
+  moodsWindow.on('closed', () => {
+    if (process.platform === 'darwin') {
+      // get focus on the last app
+      Menu.sendActionToFirstResponder('hide:')
+    }
+    moodsWindow = null
+  });
   // if (env === 'development') {
   //   moodsWindow.webContents.openDevTools();
   // }
